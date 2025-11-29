@@ -4,7 +4,9 @@ import { Card } from "@/components/ui/card";
 import FederatedLearningBasics from "@/components/demo/FederatedLearningBasics";
 import TraditionalIssues from "@/components/demo/TraditionalIssues";
 import OurSolution from "@/components/demo/OurSolution";
-import { Brain, Shield, Zap } from "lucide-react";
+import Methodology from "@/components/demo/Methodology";
+import ExperimentalResults from "@/components/demo/ExperimentalResults";
+import { Brain, Shield, Zap, Workflow, BarChart3 } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("basics");
@@ -64,7 +66,7 @@ const Index = () => {
       <section className="py-12 px-6">
         <div className="container mx-auto max-w-7xl">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-3 h-14 mb-12 bg-card/50 backdrop-blur p-1 rounded-2xl">
+            <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-5 h-14 mb-12 bg-card/50 backdrop-blur p-1 rounded-2xl">
               <TabsTrigger 
                 value="basics" 
                 className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
@@ -86,6 +88,20 @@ const Index = () => {
                 <Zap className="w-4 h-4 mr-2" />
                 Our Solution
               </TabsTrigger>
+              <TabsTrigger 
+                value="methodology" 
+                className="rounded-xl data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground transition-all duration-300"
+              >
+                <Workflow className="w-4 h-4 mr-2" />
+                Methodology
+              </TabsTrigger>
+              <TabsTrigger 
+                value="results" 
+                className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"
+              >
+                <BarChart3 className="w-4 h-4 mr-2" />
+                Results
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="basics" className="animate-fade-in">
@@ -98,6 +114,14 @@ const Index = () => {
 
             <TabsContent value="solution" className="animate-fade-in">
               <OurSolution />
+            </TabsContent>
+
+            <TabsContent value="methodology" className="animate-fade-in">
+              <Methodology />
+            </TabsContent>
+
+            <TabsContent value="results" className="animate-fade-in">
+              <ExperimentalResults />
             </TabsContent>
           </Tabs>
         </div>
