@@ -1,37 +1,70 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lock, Key, Server, Smartphone, ArrowRight, Shield, Zap, Database } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Lock, Key, Server, Smartphone, ArrowRight, Shield, Zap, Database, Play, Pause, RotateCcw } from "lucide-react";
 
 const Methodology = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   const steps = [
     { id: 0, title: "mTLS Handshake", icon: Shield, color: "primary" },
     { id: 1, title: "Key Generation", icon: Key, color: "secondary" },
     { id: 2, title: "Key Exchange", icon: ArrowRight, color: "success" },
-    { id: 3, title: "Model Encryption", icon: Lock, color: "warning" },
-    { id: 4, title: "Client Training", icon: Database, color: "primary" },
-    { id: 5, title: "Accuracy Validation", icon: Shield, color: "secondary" },
-    { id: 6, title: "Aggregation", icon: Server, color: "success" },
+    { id: 3, title: "Client Training", icon: Database, color: "primary" },
+    { id: 4, title: "Quantization", icon: Zap, color: "warning" },
+    { id: 5, title: "Model Encryption", icon: Lock, color: "success" },
+    { id: 6, title: "Accuracy Validation", icon: Shield, color: "secondary" },
+    { id: 7, title: "Aggregation", icon: Server, color: "primary" },
+    { id: 8, title: "Final Encryption", icon: Lock, color: "success" },
   ];
 
   useEffect(() => {
+    if (!isPlaying) return;
+    
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isPlaying, steps.length]);
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
 
   return (
     <div className="space-y-8">
       {/* Process Overview */}
       <Card className="p-8 bg-gradient-to-br from-card via-card/80 to-accent/5">
-        <h2 className="text-3xl font-bold mb-6 flex items-center gap-3">
-          <Zap className="w-8 h-8 text-primary animate-pulse-glow" />
-          Complete Workflow
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-3xl font-bold flex items-center gap-3">
+            <Zap className="w-8 h-8 text-primary animate-pulse-glow" />
+            Complete Workflow
+          </h2>
+          
+          {/* Playback Controls */}
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => setIsPlaying(!isPlaying)}
+              variant="outline"
+              size="sm"
+              className="gap-2"
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              {isPlaying ? "Pause" : "Play"}
+            </Button>
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              size="sm"
+              className="gap-2"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Reset
+            </Button>
+          </div>
+        </div>
         
         {/* Step Indicators */}
         <div className="flex items-center justify-between mb-12 overflow-x-auto pb-4">
@@ -193,42 +226,107 @@ const Methodology = () => {
             </div>
           )}
 
-          {/* Step 3: Model Encryption & Quantization */}
+          {/* Step 3: Client Training & JS Divergence */}
           {activeStep === 3 && (
             <div className="space-y-6 animate-fade-in">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">Model Encryption & Optimization</h3>
-                <p className="text-muted-foreground">Secure transmission with quantization</p>
+                <h3 className="text-2xl font-bold mb-2">Local Training & Data Distribution</h3>
+                <p className="text-muted-foreground">Client-side model training on local data</p>
               </div>
               
-              <div className="space-y-6">
-                <Card className="p-6 bg-secondary/5 border-secondary/30">
+              <div className="space-y-4">
+                <Card className="p-6 bg-primary/5 border-primary/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Server className="w-12 h-12 text-secondary animate-pulse" />
-                    <h4 className="text-xl font-bold">Server Processing</h4>
+                    <Smartphone className="w-12 h-12 text-primary animate-pulse" />
+                    <h4 className="text-xl font-bold">Client Processing</h4>
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-left">
-                      <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center">
+                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-right">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
                         <span className="text-sm font-bold">1</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">Quantize Model</p>
-                        <p className="text-xs text-muted-foreground">Compress model size → Reduce bandwidth</p>
+                        <p className="font-medium">Receive Initial Model</p>
+                        <p className="text-xs text-muted-foreground">Download global model from server</p>
                       </div>
-                      <Zap className="w-5 h-5 text-warning animate-pulse" />
+                      <ArrowRight className="w-5 h-5 text-primary" />
                     </div>
 
-                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
-                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                    <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-lg border border-secondary/30 animate-slide-in-right" style={{ animationDelay: "0.1s" }}>
+                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
                         <span className="text-sm font-bold">2</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">Generate Encryption Key</p>
-                        <p className="text-xs text-muted-foreground">New symmetric key for model encryption</p>
+                        <p className="font-medium">Local Training</p>
+                        <p className="text-xs text-muted-foreground">Train on private local data</p>
                       </div>
-                      <Key className="w-5 h-5 text-primary animate-pulse" />
+                      <Database className="w-5 h-5 text-secondary animate-pulse-glow" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-right" style={{ animationDelay: "0.2s" }}>
+                      <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">3</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Measure JS Divergence</p>
+                        <p className="text-xs text-muted-foreground">Calculate data distribution (IID measure)</p>
+                      </div>
+                      <Shield className="w-5 h-5 text-warning" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-right" style={{ animationDelay: "0.3s" }}>
+                      <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">4</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Model Update Ready</p>
+                        <p className="text-xs text-muted-foreground">Trained model ready for quantization</p>
+                      </div>
+                      <Database className="w-5 h-5 text-success animate-pulse" />
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Quantization */}
+          {activeStep === 4 && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-2">Model Quantization</h3>
+                <p className="text-muted-foreground">Compress model for efficient transmission</p>
+              </div>
+              
+              <div className="space-y-6">
+                <Card className="p-6 bg-warning/5 border-warning/30">
+                  <div className="flex items-center gap-4 mb-4">
+                    <Zap className="w-12 h-12 text-warning animate-pulse" />
+                    <h4 className="text-xl font-bold">Quantization Process</h4>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-left">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">1</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Analyze Model Weights</p>
+                        <p className="text-xs text-muted-foreground">Identify weight distribution patterns</p>
+                      </div>
+                      <Database className="w-5 h-5 text-primary animate-pulse" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
+                      <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">2</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Apply Quantization</p>
+                        <p className="text-xs text-muted-foreground">Convert 32-bit floats → 8-bit integers</p>
+                      </div>
+                      <Zap className="w-5 h-5 text-warning animate-pulse" />
                     </div>
 
                     <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
@@ -236,21 +334,27 @@ const Methodology = () => {
                         <span className="text-sm font-bold">3</span>
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">Encrypt Model Parameters</p>
-                        <p className="text-xs text-muted-foreground">Using encryption key</p>
+                        <p className="font-medium">Size Reduction</p>
+                        <p className="text-xs text-muted-foreground">Up to 75% smaller model size</p>
                       </div>
-                      <Lock className="w-5 h-5 text-success animate-pulse-glow" />
+                      <Zap className="w-5 h-5 text-success animate-pulse-glow" />
                     </div>
+                  </div>
+                </Card>
 
-                    <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-lg border border-secondary/30 animate-slide-in-left" style={{ animationDelay: "0.3s" }}>
-                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
-                        <span className="text-sm font-bold">4</span>
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium">Encrypt Encryption Key</p>
-                        <p className="text-xs text-muted-foreground">Using shared key (for each client)</p>
-                      </div>
-                      <Shield className="w-5 h-5 text-secondary animate-pulse" />
+                {/* Quantization Visualization */}
+                <Card className="p-6 bg-background/50 border-border">
+                  <h4 className="font-bold mb-4 text-center">Compression Benefits</h4>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="text-center p-4 bg-destructive/10 rounded-lg border border-destructive/30">
+                      <p className="text-sm text-muted-foreground mb-2">Before Quantization</p>
+                      <div className="text-3xl font-bold text-destructive mb-1">100 MB</div>
+                      <p className="text-xs text-muted-foreground">32-bit precision</p>
+                    </div>
+                    <div className="text-center p-4 bg-success/10 rounded-lg border border-success/30 animate-pulse-glow">
+                      <p className="text-sm text-muted-foreground mb-2">After Quantization</p>
+                      <div className="text-3xl font-bold text-success mb-1">25 MB</div>
+                      <p className="text-xs text-muted-foreground">8-bit precision</p>
                     </div>
                   </div>
                 </Card>
@@ -262,77 +366,77 @@ const Methodology = () => {
             </div>
           )}
 
-          {/* Step 4: Client Training & JS Divergence */}
-          {activeStep === 4 && (
+          {/* Step 5: Model Encryption */}
+          {activeStep === 5 && (
             <div className="space-y-6 animate-fade-in">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-2">Local Training & Data Distribution</h3>
-                <p className="text-muted-foreground">Client-side computation</p>
+                <h3 className="text-2xl font-bold mb-2">Model Encryption</h3>
+                <p className="text-muted-foreground">Secure quantized model using shared key</p>
               </div>
               
-              <div className="space-y-4">
-                <Card className="p-6 bg-primary/5 border-primary/30">
+              <div className="space-y-6">
+                <Card className="p-6 bg-success/5 border-success/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Smartphone className="w-12 h-12 text-primary animate-pulse" />
-                    <h4 className="text-xl font-bold">Client Processing</h4>
+                    <Lock className="w-12 h-12 text-success animate-pulse" />
+                    <h4 className="text-xl font-bold">Encryption Process</h4>
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-right">
-                      <Lock className="w-5 h-5 text-success" />
-                      <div className="flex-1">
-                        <p className="font-medium">Decrypt Encryption Key</p>
-                        <p className="text-xs text-muted-foreground">Using shared key</p>
+                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-left">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">1</span>
                       </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Use Shared Key</p>
+                        <p className="text-xs text-muted-foreground">Use the shared key established from KEM exchange</p>
+                      </div>
+                      <Key className="w-5 h-5 text-primary animate-pulse" />
                     </div>
 
-                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-right" style={{ animationDelay: "0.1s" }}>
-                      <Key className="w-5 h-5 text-primary" />
-                      <div className="flex-1">
-                        <p className="font-medium">Decrypt Model Parameters</p>
-                        <p className="text-xs text-muted-foreground">Using encryption key</p>
+                    <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
+                      <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">2</span>
                       </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-right" style={{ animationDelay: "0.2s" }}>
-                      <Zap className="w-5 h-5 text-warning" />
                       <div className="flex-1">
-                        <p className="font-medium">Dequantize Model</p>
-                        <p className="text-xs text-muted-foreground">Decompress for training</p>
+                        <p className="font-medium">Encrypt Model Parameters</p>
+                        <p className="text-xs text-muted-foreground">Encrypt quantized model params with shared key</p>
                       </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-lg border border-secondary/30 animate-slide-in-right" style={{ animationDelay: "0.3s" }}>
-                      <Database className="w-5 h-5 text-secondary animate-pulse-glow" />
-                      <div className="flex-1">
-                        <p className="font-medium">Local Training</p>
-                        <p className="text-xs text-muted-foreground">Train on private local data</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 bg-destructive/10 rounded-lg border border-destructive/30 animate-slide-in-right" style={{ animationDelay: "0.4s" }}>
-                      <Shield className="w-5 h-5 text-destructive" />
-                      <div className="flex-1">
-                        <p className="font-medium">Measure JS Divergence</p>
-                        <p className="text-xs text-muted-foreground">Calculate data distribution (IID measure)</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-right" style={{ animationDelay: "0.5s" }}>
                       <Lock className="w-5 h-5 text-success animate-pulse-glow" />
-                      <div className="flex-1">
-                        <p className="font-medium">Encrypt Updates & JS Values</p>
-                        <p className="text-xs text-muted-foreground">Secure transmission back to server</p>
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
+                      <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">3</span>
                       </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Encrypt JS Measurement</p>
+                        <p className="text-xs text-muted-foreground">Encrypt JS divergence values with shared key</p>
+                      </div>
+                      <Database className="w-5 h-5 text-warning animate-pulse" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-lg border border-secondary/30 animate-slide-in-left" style={{ animationDelay: "0.3s" }}>
+                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">4</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Send to Server</p>
+                        <p className="text-xs text-muted-foreground">Transmit encrypted model & JS values securely</p>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-secondary animate-data-flow" />
                     </div>
                   </div>
                 </Card>
+
+                <div className="flex items-center justify-center">
+                  <ArrowRight className="w-16 h-16 text-success animate-data-flow" />
+                </div>
               </div>
             </div>
           )}
 
-          {/* Step 5: Cross-Validation */}
-          {activeStep === 5 && (
+          {/* Step 6: Accuracy Validation */}
+          {activeStep === 6 && (
             <div className="space-y-6 animate-fade-in">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-2">Accuracy Validation</h3>
@@ -376,8 +480,8 @@ const Methodology = () => {
             </div>
           )}
 
-          {/* Step 6: Weighted Aggregation */}
-          {activeStep === 6 && (
+          {/* Step 7: Weighted Aggregation */}
+          {activeStep === 7 && (
             <div className="space-y-6 animate-fade-in">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-2">Intelligent Aggregation</h3>
@@ -433,9 +537,106 @@ const Methodology = () => {
                     
                     <div className="flex items-center gap-3 p-3 bg-success/10 rounded-lg animate-slide-in-right">
                       <Lock className="w-5 h-5 text-success animate-pulse-glow" />
-                      <p className="text-sm">Re-encrypt with new encryption key for next round</p>
+                      <p className="text-sm">Prepare for final encryption</p>
                     </div>
                   </div>
+                </Card>
+              </div>
+            </div>
+          )}
+
+          {/* Step 8: Final Encryption */}
+          {activeStep === 8 && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-2">Final Model Encryption</h3>
+                <p className="text-muted-foreground">Secure aggregated model for next round distribution</p>
+              </div>
+              
+              <div className="space-y-6">
+                <Card className="p-6 bg-success/5 border-success/30">
+                  <div className="flex items-center gap-4 mb-4">
+                    <Lock className="w-12 h-12 text-success animate-pulse" />
+                    <h4 className="text-xl font-bold">Encryption Process</h4>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3 p-4 bg-warning/10 rounded-lg border border-warning/30 animate-slide-in-left">
+                      <div className="w-8 h-8 rounded-full bg-warning/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">1</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Quantize Aggregated Model</p>
+                        <p className="text-xs text-muted-foreground">Compress the newly aggregated global model</p>
+                      </div>
+                      <Zap className="w-5 h-5 text-warning animate-pulse" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-left" style={{ animationDelay: "0.1s" }}>
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">2</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Generate New Encryption Key</p>
+                        <p className="text-xs text-muted-foreground">Fresh symmetric key for next round</p>
+                      </div>
+                      <Key className="w-5 h-5 text-primary animate-pulse" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-success/10 rounded-lg border border-success/30 animate-slide-in-left" style={{ animationDelay: "0.2s" }}>
+                      <div className="w-8 h-8 rounded-full bg-success/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">3</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Encrypt Global Model</p>
+                        <p className="text-xs text-muted-foreground">Apply encryption to quantized aggregated model</p>
+                      </div>
+                      <Lock className="w-5 h-5 text-success animate-pulse-glow" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-secondary/10 rounded-lg border border-secondary/30 animate-slide-in-left" style={{ animationDelay: "0.3s" }}>
+                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">4</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Encrypt Keys for Each Client</p>
+                        <p className="text-xs text-muted-foreground">Using individual shared keys from KEM</p>
+                      </div>
+                      <Shield className="w-5 h-5 text-secondary animate-pulse" />
+                    </div>
+
+                    <div className="flex items-center gap-3 p-4 bg-primary/10 rounded-lg border border-primary/30 animate-slide-in-left" style={{ animationDelay: "0.4s" }}>
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-sm font-bold">5</span>
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Distribute to Clients</p>
+                        <p className="text-xs text-muted-foreground">Send encrypted model for next training round</p>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-primary animate-data-flow" />
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Next Round Indicator */}
+                <Card className="p-6 bg-background/50 border-border">
+                  <h4 className="font-bold mb-4 text-center">Ready for Next Round</h4>
+                  <div className="flex items-center justify-center gap-8">
+                    <div className="text-center p-4 bg-success/10 rounded-lg border border-success/30">
+                      <Lock className="w-8 h-8 text-success mx-auto mb-2" />
+                      <p className="text-sm font-medium">Encrypted Model</p>
+                      <p className="text-xs text-muted-foreground">Secure & Quantized</p>
+                    </div>
+                    <ArrowRight className="w-8 h-8 text-primary animate-data-flow" />
+                    <div className="text-center p-4 bg-primary/10 rounded-lg border border-primary/30">
+                      <Smartphone className="w-8 h-8 text-primary mx-auto mb-2" />
+                      <p className="text-sm font-medium">All Clients</p>
+                      <p className="text-xs text-muted-foreground">Ready for Training</p>
+                    </div>
+                  </div>
+                  <p className="text-xs text-center text-muted-foreground mt-4">
+                    Cycle continues with improved global model
+                  </p>
                 </Card>
               </div>
             </div>
@@ -470,6 +671,18 @@ const Methodology = () => {
               JS divergence + accuracy weighting handles non-IID data effectively
             </p>
           </div>
+        </div>
+      </Card>
+
+      {/* Methodology Diagram */}
+      <Card className="p-8 bg-gradient-to-br from-primary/5 to-secondary/5">
+        <h3 className="text-2xl font-bold mb-6 text-center">Methodology Overview</h3>
+        <div className="flex justify-center">
+          <img 
+            src="./images/methodology.png" 
+            alt="Methodology Overview Diagram" 
+            className="max-w-full h-auto rounded-xl border-2 border-primary/30 shadow-lg"
+          />
         </div>
       </Card>
     </div>

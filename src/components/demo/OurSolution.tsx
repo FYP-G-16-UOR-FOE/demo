@@ -577,6 +577,18 @@ const OurSolution = () => {
                             </div>
                           </div>
                         </div>
+
+                        {/* Security Protocol Image */}
+                        <div className="mt-8 pt-6 border-t-2 border-border">
+                          <p className="text-center font-bold mb-4">Security Protocol Architecture</p>
+                          <div className="flex justify-center">
+                            <img 
+                              src="./images/sec_protocol.png" 
+                              alt="Security Protocol Architecture" 
+                              className="max-w-full h-auto rounded-xl border-2 border-primary/30 shadow-lg"
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>

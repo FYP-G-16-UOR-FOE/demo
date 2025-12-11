@@ -5,11 +5,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, TrendingDown, Minus, CheckCircle2, XCircle } from "lucide-react";
 
 const ExperimentalResults = () => {
-  const accuracyComparison = [
-    { method: "FedAvg (Baseline)", mnist: "92.3%", cifar10: "68.5%", fashionMnist: "85.2%", trend: "baseline" },
-    { method: "FedProx", mnist: "93.1%", cifar10: "70.2%", fashionMnist: "86.1%", trend: "up" },
-    { method: "FedNova", mnist: "93.8%", cifar10: "71.5%", fashionMnist: "86.8%", trend: "up" },
-    { method: "Our Solution", mnist: "96.7%", cifar10: "79.3%", fashionMnist: "91.4%", trend: "up-high" },
+  // CIFAR-10 accuracy data across training rounds
+  const cifar10Accuracy = [
+    { method: "FedAvg", r0_29: "66.06%", r30_59: "81.00%", r60_99: "82.49%", r100_199: "83.11%", r200_299: "84.11%", highlight: false },
+    { method: "CAFA", r0_29: "70.22%", r30_59: "82.81%", r60_99: "83.74%", r100_199: "84.39%", r200_299: "84.85%", highlight: false, best299: true },
+    { method: "1-JSD", r0_29: "70.24%", r30_59: "82.30%", r60_99: "83.65%", r100_199: "84.14%", r200_299: "84.35%", highlight: false },
+    { method: "SEBW", r0_29: "71.71%", r30_59: "83.00%", r60_99: "83.98%", r100_199: "84.30%", r200_299: "84.40%", highlight: false },
+    { method: "AB_SEBW", r0_29: "72.07%", r30_59: "83.36%", r60_99: "84.05%", r100_199: "84.41%", r200_299: "84.62%", highlight: false, best0_29: true },
+    { method: "SHEAF", r0_29: "72.01%", r30_59: "83.59%", r60_99: "84.23%", r100_199: "84.50%", r200_299: "84.71%", highlight: true, best30_59: true, best60_99: true, best100_199: true },
+  ];
+
+  // 5G-NIDD accuracy data across training rounds
+  const fiveGNiddAccuracy = [
+    { method: "FedAvg", r0_29: "88.25%", r30_59: "97.29%", highlight: false },
+    { method: "CAFA", r0_29: "86.65%", r30_59: "97.28%", highlight: false },
+    { method: "1-JSD", r0_29: "90.09%", r30_59: "98.36%", highlight: false },
+    { method: "SEBW", r0_29: "92.43%", r30_59: "98.41%", highlight: true, best0_29: true, best30_59: true },
+    { method: "AB_SEBW", r0_29: "90.58%", r30_59: "97.93%", highlight: false },
+    { method: "SHEAF", r0_29: "88.36%", r30_59: "97.54%", highlight: false },
   ];
 
   const convergenceData = [
@@ -20,10 +33,12 @@ const ExperimentalResults = () => {
   ];
 
   const securityComparison = [
-    { attack: "Model Poisoning", fedavg: false, fedprox: false, ours: true },
-    { attack: "Byzantine Attack", fedavg: false, fedprox: true, ours: true },
-    { attack: "Inference Attack", fedavg: false, fedprox: false, ours: true },
-    { attack: "Data Privacy", fedavg: false, fedprox: false, ours: true },
+    { attack: "Replay Attack", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "Alive" },
+    { attack: "Man-in-the-Middle (MITM)", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "Nisynch" },
+    { attack: "Model Inference Attack", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "Secret model" },
+    { attack: "Key Compromise", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "SKR sharedKey/encKey" },
+    { attack: "Impersonation Attack", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "Niagree" },
+    { attack: "Data Tampering", fedavg: false, fedprox: false, cafa: false, ours: true, scytherClaim: "Commit" },
   ];
 
   const performanceMetrics = [
@@ -55,7 +70,7 @@ const ExperimentalResults = () => {
           Experimental Results
         </h2>
         <p className="text-muted-foreground mb-8">
-          Comprehensive comparison across multiple datasets with 100 clients in non-IID settings
+          Average accuracy across training rounds for CIFAR-10 and 5G-NIDD datasets
         </p>
 
         <Tabs defaultValue="accuracy" className="w-full">
@@ -68,32 +83,110 @@ const ExperimentalResults = () => {
 
           {/* Accuracy Comparison */}
           <TabsContent value="accuracy" className="space-y-6 animate-fade-in">
+            {/* Method Abbreviations Legend */}
+            <Card className="p-4 bg-muted/30">
+              <h4 className="text-sm font-bold mb-3">Method Abbreviations</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono">SEBW</Badge>
+                  <span className="text-muted-foreground">Shannon Entropy Based Weighting Method</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono">AB_SEBW</Badge>
+                  <span className="text-muted-foreground">Accuracy-Based with Shannon Entropy-Based Weighting</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono bg-success/10 border-success">SHEAF</Badge>
+                  <span className="text-muted-foreground">Secure Heterogeneity-Aware Efficient Aggregation for Federated Learning</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono">CAFA</Badge>
+                  <span className="text-muted-foreground">Class-Aware Federated Averaging</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono">1-JSD</Badge>
+                  <span className="text-muted-foreground">1 minus Jensen-Shannon Divergence</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Badge variant="outline" className="font-mono">FedAvg</Badge>
+                  <span className="text-muted-foreground">Federated Averaging (Baseline)</span>
+                </div>
+              </div>
+            </Card>
+
+            {/* CIFAR-10 Table */}
             <Card className="p-6">
-              <h3 className="text-xl font-bold mb-4">Model Accuracy Comparison</h3>
+              <h3 className="text-xl font-bold mb-4">CIFAR-10 Dataset - Average Accuracy Across Training Rounds</h3>
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
                       <TableHead className="font-bold">Method</TableHead>
-                      <TableHead className="text-center font-bold">MNIST</TableHead>
-                      <TableHead className="text-center font-bold">CIFAR-10</TableHead>
-                      <TableHead className="text-center font-bold">Fashion-MNIST</TableHead>
-                      <TableHead className="text-center font-bold">Trend</TableHead>
+                      <TableHead className="text-center font-bold">0–29</TableHead>
+                      <TableHead className="text-center font-bold">30–59</TableHead>
+                      <TableHead className="text-center font-bold">60–99</TableHead>
+                      <TableHead className="text-center font-bold">100–199</TableHead>
+                      <TableHead className="text-center font-bold">200–299</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {accuracyComparison.map((row, idx) => (
-                      <TableRow key={idx} className={row.trend === "up-high" ? "bg-success/5" : ""}>
+                    {cifar10Accuracy.map((row, idx) => (
+                      <TableRow key={idx} className={row.highlight ? "bg-success/10" : ""}>
                         <TableCell className="font-medium">
                           {row.method}
-                          {row.trend === "up-high" && (
+                          {row.highlight && (
                             <Badge className="ml-2 bg-success">Our Method</Badge>
                           )}
                         </TableCell>
-                        <TableCell className="text-center font-mono">{row.mnist}</TableCell>
-                        <TableCell className="text-center font-mono">{row.cifar10}</TableCell>
-                        <TableCell className="text-center font-mono">{row.fashionMnist}</TableCell>
-                        <TableCell className="text-center">{getTrendIcon(row.trend)}</TableCell>
+                        <TableCell className={`text-center font-mono ${row.best0_29 ? "font-bold text-success" : ""}`}>
+                          {row.r0_29}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best30_59 ? "font-bold text-success" : ""}`}>
+                          {row.r30_59}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best60_99 ? "font-bold text-success" : ""}`}>
+                          {row.r60_99}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best100_199 ? "font-bold text-success" : ""}`}>
+                          {row.r100_199}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best299 ? "font-bold text-success" : ""}`}>
+                          {row.r200_299}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </Card>
+
+            {/* 5G-NIDD Table */}
+            <Card className="p-6">
+              <h3 className="text-xl font-bold mb-4">5G-NIDD Dataset - Average Accuracy Across Training Rounds</h3>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="font-bold">Method</TableHead>
+                      <TableHead className="text-center font-bold">0–29</TableHead>
+                      <TableHead className="text-center font-bold">30–59</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {fiveGNiddAccuracy.map((row, idx) => (
+                      <TableRow key={idx} className={row.highlight ? "bg-success/10" : ""}>
+                        <TableCell className="font-medium">
+                          {row.method}
+                          {row.highlight && (
+                            <Badge className="ml-2 bg-success">Best</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best0_29 ? "font-bold text-success" : ""}`}>
+                          {row.r0_29}
+                        </TableCell>
+                        <TableCell className={`text-center font-mono ${row.best30_59 ? "font-bold text-success" : ""}`}>
+                          {row.r30_59}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -103,89 +196,35 @@ const ExperimentalResults = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card className="p-6 bg-gradient-to-br from-success/10 to-success/5 animate-scale-in">
-                <div className="text-4xl font-bold text-success mb-2">+4.4%</div>
-                <p className="text-sm text-muted-foreground">Average improvement over FedAvg on MNIST</p>
+                <div className="text-4xl font-bold text-success mb-2">84.50%</div>
+                <p className="text-sm text-muted-foreground">SHEAF best accuracy at rounds 100-199 on CIFAR-10</p>
               </Card>
               <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 animate-scale-in" style={{ animationDelay: "0.1s" }}>
-                <div className="text-4xl font-bold text-primary mb-2">+10.8%</div>
-                <p className="text-sm text-muted-foreground">Average improvement over FedAvg on CIFAR-10</p>
+                <div className="text-4xl font-bold text-primary mb-2">98.41%</div>
+                <p className="text-sm text-muted-foreground">SEBW best accuracy at rounds 30-59 on 5G-NIDD</p>
               </Card>
               <Card className="p-6 bg-gradient-to-br from-secondary/10 to-secondary/5 animate-scale-in" style={{ animationDelay: "0.2s" }}>
-                <div className="text-4xl font-bold text-secondary mb-2">+6.2%</div>
-                <p className="text-sm text-muted-foreground">Average improvement over FedAvg on Fashion-MNIST</p>
+                <div className="text-4xl font-bold text-secondary mb-2">+6.01%</div>
+                <p className="text-sm text-muted-foreground">AB_SEBW improvement over FedAvg (0-29 rounds) on CIFAR-10</p>
               </Card>
             </div>
           </TabsContent>
 
           {/* Convergence Speed */}
           <TabsContent value="convergence" className="space-y-6 animate-fade-in">
-            <Card className="p-6">
-              <h3 className="text-xl font-bold mb-4">Convergence Speed Comparison</h3>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="font-bold">Method</TableHead>
-                      <TableHead className="text-center font-bold">Rounds to 95% Accuracy</TableHead>
-                      <TableHead className="text-center font-bold">Total Training Time</TableHead>
-                      <TableHead className="text-center font-bold">Performance</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {convergenceData.map((row, idx) => (
-                      <TableRow key={idx} className={row.trend === "up-high" ? "bg-success/5" : ""}>
-                        <TableCell className="font-medium">
-                          {row.method}
-                          {row.trend === "up-high" && (
-                            <Badge className="ml-2 bg-success">Our Method</Badge>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-center font-mono">{row.rounds}</TableCell>
-                        <TableCell className="text-center font-mono">{row.time}</TableCell>
-                        <TableCell className="text-center">{getTrendIcon(row.trend)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+            <Card className="p-4">
+              <h3 className="text-xl font-bold mb-2">Convergence Analysis</h3>
+              <p className="text-muted-foreground mb-4 text-sm">
+                Comparison of model accuracy convergence across training rounds for different aggregation methods
+              </p>
+              <div className="w-full">
+                <img 
+                  src="./images/Convergence.png" 
+                  alt="Convergence Analysis Chart" 
+                  className="w-full h-auto rounded-xl border-2 border-primary/30 shadow-lg"
+                />
               </div>
             </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="p-6 bg-gradient-to-br from-success/10 to-success/5">
-                <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-success animate-pulse" />
-                  Faster Convergence
-                </h4>
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">52% fewer rounds</span>
-                    <Badge className="bg-success">vs FedAvg</Badge>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">51% less training time</span>
-                    <Badge className="bg-success">vs FedAvg</Badge>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5">
-                <h4 className="text-xl font-bold mb-4">Why It's Faster</h4>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success mt-0.5" />
-                    <span>Weighted aggregation improves model quality per round</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success mt-0.5" />
-                    <span>Quantization reduces communication overhead</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-success mt-0.5" />
-                    <span>Better handling of non-IID data distribution</span>
-                  </li>
-                </ul>
-              </Card>
-            </div>
           </TabsContent>
 
           {/* Security Comparison */}
@@ -199,6 +238,7 @@ const ExperimentalResults = () => {
                       <TableHead className="font-bold">Attack Vector</TableHead>
                       <TableHead className="text-center font-bold">FedAvg</TableHead>
                       <TableHead className="text-center font-bold">FedProx</TableHead>
+                      <TableHead className="text-center font-bold">CAFA</TableHead>
                       <TableHead className="text-center font-bold">Our Solution</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -221,6 +261,13 @@ const ExperimentalResults = () => {
                           )}
                         </TableCell>
                         <TableCell className="text-center">
+                          {row.cafa ? (
+                            <CheckCircle2 className="w-5 h-5 text-success mx-auto" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-destructive mx-auto" />
+                          )}
+                        </TableCell>
+                        <TableCell className="text-center">
                           {row.ours ? (
                             <CheckCircle2 className="w-5 h-5 text-success mx-auto animate-pulse-glow" />
                           ) : (
@@ -236,64 +283,117 @@ const ExperimentalResults = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="p-6 bg-gradient-to-br from-success/10 to-success/5">
-                <h4 className="text-xl font-bold mb-4">Security Layers</h4>
+                <h4 className="text-xl font-bold mb-4">Security Layers (Protocol Design)</h4>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-bold">1</span>
                     </div>
-                    <span className="text-sm">mTLS authentication for secure connections</span>
+                    <div className="text-sm">
+                      <span className="font-semibold">mTLS Channel</span>
+                      <p className="text-muted-foreground text-xs">Mutual TLS authentication between client and server</p>
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-bold">2</span>
                     </div>
-                    <span className="text-sm">KEM encryption for key exchange</span>
+                    <div className="text-sm">
+                      <span className="font-semibold">KEM Key Generation</span>
+                      <p className="text-muted-foreground text-xs">Server generates kem_server_pk and kem_server_sk</p>
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-bold">3</span>
                     </div>
-                    <span className="text-sm">Model encryption with unique keys per round</span>
+                    <div className="text-sm">
+                      <span className="font-semibold">KEM Encapsulation/Decapsulation</span>
+                      <p className="text-muted-foreground text-xs">Client encapsulates with server_pk, server decapsulates to derive shared_key</p>
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
                       <span className="text-xs font-bold">4</span>
                     </div>
-                    <span className="text-sm">Byzantine-robust aggregation</span>
+                    <div className="text-sm">
+                      <span className="font-semibold">Model Encryption with shared_key</span>
+                      <p className="text-muted-foreground text-xs">Model params encrypted: &#123;model_parms, Ns, Nc, ad, T&#125;<sub>shared_key</sub></p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold">5</span>
+                    </div>
+                    <div className="text-sm">
+                      <span className="font-semibold">Nonce & Timestamp Verification</span>
+                      <p className="text-muted-foreground text-xs">Ns (server nonce), Nc (client nonce), T (timestamp) prevent replay</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-bold">6</span>
+                    </div>
+                    <div className="text-sm">
+                      <span className="font-semibold">Associated Data (AD) Tags</span>
+                      <p className="text-muted-foreground text-xs">Message tags: key encap, key decap, global model, client update, accuracy test</p>
+                    </div>
                   </li>
                 </ul>
               </Card>
 
-              <Card className="p-6 bg-gradient-to-br from-destructive/10 to-destructive/5">
-                <h4 className="text-xl font-bold mb-4">Attack Mitigation Results</h4>
-                <div className="space-y-4">
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm">Model Poisoning Defense</span>
-                      <span className="text-sm font-bold">98.7%</span>
+              <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5">
+                <h4 className="text-xl font-bold mb-4">Scyther Verification Results</h4>
+                <p className="text-xs text-muted-foreground mb-4">Formal verification using Scyther tool - All claims verified with no attacks found</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Secret sharedKey</span>
                     </div>
-                    <div className="h-2 bg-background rounded-full overflow-hidden">
-                      <div className="h-full bg-success animate-slide-in-right" style={{ width: "98.7%" }} />
-                    </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
                   </div>
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm">Byzantine Attack Defense</span>
-                      <span className="text-sm font-bold">97.2%</span>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Secret encKey</span>
                     </div>
-                    <div className="h-2 bg-background rounded-full overflow-hidden">
-                      <div className="h-full bg-success animate-slide-in-right" style={{ width: "97.2%", animationDelay: "0.1s" }} />
-                    </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
                   </div>
-                  <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm">Privacy Preservation</span>
-                      <span className="text-sm font-bold">99.5%</span>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Secret model</span>
                     </div>
-                    <div className="h-2 bg-background rounded-full overflow-hidden">
-                      <div className="h-full bg-success animate-slide-in-right" style={{ width: "99.5%", animationDelay: "0.2s" }} />
+                    <Badge className="bg-success text-xs">Verified</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Alive (Anti-Replay)</span>
                     </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Nisynch (Anti-MITM)</span>
+                    </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Niagree (Authentication)</span>
+                    </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
+                  </div>
+                  <div className="flex items-center justify-between p-2 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                      <span className="text-sm font-medium">Commit (Integrity)</span>
+                    </div>
+                    <Badge className="bg-success text-xs">Verified</Badge>
                   </div>
                 </div>
               </Card>
@@ -349,7 +449,7 @@ const ExperimentalResults = () => {
       </Card>
 
       {/* Overall Summary */}
-      <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
+      {/* <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
         <h3 className="text-2xl font-bold mb-6">Overall Impact</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -403,7 +503,7 @@ const ExperimentalResults = () => {
             </ul>
           </div>
         </div>
-      </Card>
+      </Card> */}
     </div>
   );
 };
