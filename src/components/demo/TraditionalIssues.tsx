@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { AlertTriangle, TrendingDown, Shield, Gauge } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import SecurityAnimation from "./SecurityAnimation";
 
 const TraditionalIssues = () => {
   const [hoveredIssue, setHoveredIssue] = useState<string | null>(null);
@@ -63,11 +64,10 @@ const TraditionalIssues = () => {
                     <div key={device} className="p-4 rounded-xl bg-success/10 border border-success/30">
                       <p className="text-xs font-medium mb-2">Device {device}</p>
                       <div className="flex gap-1">
-                        {['red', 'blue', 'green', 'yellow'].map((color) => (
+                        {['bg-destructive', 'bg-primary', 'bg-success', 'bg-warning'].map((color) => (
                           <div
                             key={color}
-                            className="h-8 flex-1 rounded"
-                            style={{ backgroundColor: `${color}` }}
+                            className={`h-8 flex-1 rounded ${color}`}
                           />
                         ))}
                       </div>
@@ -88,24 +88,24 @@ const TraditionalIssues = () => {
                   <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
                     <p className="text-xs font-medium mb-2">Device 1</p>
                     <div className="flex gap-1">
-                      <div className="h-8 flex-[3]" style={{ backgroundColor: 'red' }} />
-                      <div className="h-8 flex-[1]" style={{ backgroundColor: 'blue' }} />
+                      <div className="h-8 flex-[3] bg-destructive rounded" />
+                      <div className="h-8 flex-[1] bg-primary rounded" />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2 text-center">Skewed Distribution</p>
                   </div>
                   <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
                     <p className="text-xs font-medium mb-2">Device 2</p>
                     <div className="flex gap-1">
-                      <div className="h-8 flex-[1]" style={{ backgroundColor: 'green' }} />
-                      <div className="h-8 flex-[3]" style={{ backgroundColor: 'yellow' }} />
+                      <div className="h-8 flex-[1] bg-success rounded" />
+                      <div className="h-8 flex-[3] bg-warning rounded" />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2 text-center">Unbalanced Classes</p>
                   </div>
                   <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
                     <p className="text-xs font-medium mb-2">Device 3</p>
                     <div className="flex gap-1">
-                      <div className="h-8 flex-[2]" style={{ backgroundColor: 'blue' }} />
-                      <div className="h-8 flex-[2]" style={{ backgroundColor: 'green' }} />
+                      <div className="h-8 flex-[2] bg-primary rounded" />
+                      <div className="h-8 flex-[2] bg-success rounded" />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2 text-center">Different Patterns</p>
                   </div>
@@ -134,148 +134,47 @@ const TraditionalIssues = () => {
           </Card>
         </TabsContent>
 
-        {/* Security Issues */}
+        {/* Security Issues - Now with Animation */}
         <TabsContent value="security" className="mt-8 space-y-8">
-          <Card className="p-8 bg-card/50 backdrop-blur border-destructive/20">
+          <Card className="p-8 bg-card/50 backdrop-blur border-primary/20">
             <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Shield className="w-7 h-7 text-destructive" />
-              Security Vulnerabilities
+              <Shield className="w-7 h-7 text-primary" />
+              Security Vulnerabilities - Interactive Story
             </h3>
+            <p className="text-muted-foreground mb-8 text-center max-w-2xl mx-auto">
+              Watch this animated story to understand common attacks in Federated Learning and how to protect against them!
+            </p>
+            
+            {/* Animated Security Visualization */}
+            <SecurityAnimation />
 
-            {/* Attack Scenarios */}
-            <div className="space-y-6">
-              {/* Poisoning Attack */}
-              <div 
-                className="p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer"
-                style={{
-                  borderColor: hoveredIssue === 'poisoning' ? 'hsl(var(--destructive))' : 'hsl(var(--border))',
-                  backgroundColor: hoveredIssue === 'poisoning' ? 'hsl(var(--destructive) / 0.1)' : 'transparent'
-                }}
-                onMouseEnter={() => setHoveredIssue('poisoning')}
-                onMouseLeave={() => setHoveredIssue(null)}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-destructive/20 flex items-center justify-center flex-shrink-0">
-                    <AlertTriangle className="w-6 h-6 text-destructive" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-2">Model Poisoning Attacks</h4>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Malicious participants send corrupted model updates to degrade global model performance
-                    </p>
-                    
-                    {hoveredIssue === 'poisoning' && (
-                      <div className="mt-4 p-4 rounded-lg bg-card/50 border border-destructive/30 animate-fade-in">
-                        <div className="flex items-center gap-8">
-                          <div className="text-center">
-                            <div className="w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center mb-2 mx-auto">
-                              <span className="text-2xl">🦹</span>
-                            </div>
-                            <p className="text-xs font-medium">Attacker</p>
-                          </div>
-                          <div className="flex-1 flex items-center gap-2">
-                            <div className="flex-1 h-1 bg-destructive/50 relative overflow-hidden">
-                              <div className="absolute inset-0 bg-destructive animate-data-flow" />
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <div className="w-16 h-16 rounded-full bg-warning/20 flex items-center justify-center mb-2 mx-auto animate-pulse">
-                              <span className="text-2xl">💔</span>
-                            </div>
-                            <p className="text-xs font-medium">Corrupted Model</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+            {/* Attack Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 hover:scale-105 transition-transform cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🥷</span>
+                  <h4 className="font-semibold">Eavesdropping</h4>
                 </div>
+                <p className="text-sm text-muted-foreground">Attackers intercept and read unprotected model updates</p>
+                <div className="mt-2 text-xs text-success font-medium">✅ Solution: Encryption</div>
               </div>
-
-              {/* Inference Attack */}
-              <div 
-                className="p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer"
-                style={{
-                  borderColor: hoveredIssue === 'inference' ? 'hsl(var(--destructive))' : 'hsl(var(--border))',
-                  backgroundColor: hoveredIssue === 'inference' ? 'hsl(var(--destructive) / 0.1)' : 'transparent'
-                }}
-                onMouseEnter={() => setHoveredIssue('inference')}
-                onMouseLeave={() => setHoveredIssue(null)}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-destructive/20 flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-destructive" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-2">Privacy Inference Attacks</h4>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Attackers attempt to extract sensitive information from shared model updates
-                    </p>
-                    
-                    {hoveredIssue === 'inference' && (
-                      <div className="mt-4 p-4 rounded-lg bg-card/50 border border-destructive/30 animate-fade-in">
-                        <div className="flex items-center gap-8">
-                          <div className="text-center">
-                            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-2 mx-auto">
-                              <span className="text-2xl">📱</span>
-                            </div>
-                            <p className="text-xs font-medium">User Device</p>
-                          </div>
-                          <div className="flex-1 flex items-center gap-2">
-                            <div className="flex-1 h-1 bg-primary/50 relative overflow-hidden">
-                              <div className="absolute inset-0 bg-primary animate-data-flow" />
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <div className="w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center mb-2 mx-auto animate-pulse">
-                              <span className="text-2xl">👁️</span>
-                            </div>
-                            <p className="text-xs font-medium">Data Leakage</p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+              
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 hover:scale-105 transition-transform cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🦹</span>
+                  <h4 className="font-semibold">Tampering</h4>
                 </div>
+                <p className="text-sm text-muted-foreground">Man-in-the-middle swaps legitimate updates with malicious ones</p>
+                <div className="mt-2 text-xs text-success font-medium">✅ Solution: Digital Signatures</div>
               </div>
-
-              {/* Byzantine Attack */}
-              <div 
-                className="p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer"
-                style={{
-                  borderColor: hoveredIssue === 'byzantine' ? 'hsl(var(--destructive))' : 'hsl(var(--border))',
-                  backgroundColor: hoveredIssue === 'byzantine' ? 'hsl(var(--destructive) / 0.1)' : 'transparent'
-                }}
-                onMouseEnter={() => setHoveredIssue('byzantine')}
-                onMouseLeave={() => setHoveredIssue(null)}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-destructive/20 flex items-center justify-center flex-shrink-0">
-                    <AlertTriangle className="w-6 h-6 text-destructive" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-2">Byzantine Attacks</h4>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Coordinated malicious participants send arbitrary updates to disrupt the training process
-                    </p>
-                    
-                    {hoveredIssue === 'byzantine' && (
-                      <div className="mt-4 p-4 rounded-lg bg-card/50 border border-destructive/30 animate-fade-in">
-                        <div className="grid grid-cols-5 gap-4">
-                          {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="text-center">
-                              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 mx-auto ${
-                                i <= 2 ? 'bg-destructive/20 animate-pulse' : 'bg-success/20'
-                              }`}>
-                                <span className="text-xl">{i <= 2 ? '🦹' : '👤'}</span>
-                              </div>
-                              <p className="text-xs">{i <= 2 ? 'Malicious' : 'Honest'}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+              
+              <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 hover:scale-105 transition-transform cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🎭</span>
+                  <h4 className="font-semibold">Impersonation</h4>
                 </div>
+                <p className="text-sm text-muted-foreground">Fake clients pretend to be legitimate participants</p>
+                <div className="mt-2 text-xs text-success font-medium">✅ Solution: Identity Verification</div>
               </div>
             </div>
           </Card>
