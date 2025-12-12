@@ -449,11 +449,7 @@ const ExperimentalResults = () => {
       </Card>
 
       {/* Overall Summary */}
-<<<<<<< HEAD
     {/*  <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
-=======
-      {/* <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
->>>>>>> ee2a05cdff3780409b737620bbf6d2aaee41ef28
         <h3 className="text-2xl font-bold mb-6">Overall Impact</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -507,12 +503,8 @@ const ExperimentalResults = () => {
             </ul>
           </div>
         </div>
-<<<<<<< HEAD
       </Card>
       */}
-=======
-      </Card> */}
->>>>>>> ee2a05cdff3780409b737620bbf6d2aaee41ef28
     </div>
   );
 };
