@@ -16,27 +16,27 @@ const FederatedLearningBasics = () => {
     { 
       name: "Data Collection", 
       description: "Each device has its own unique data - photos, messages, or health records",
-      duration: 3000 
+      duration: 1000 
     },
     { 
       name: "Local Training", 
       description: "Devices train AI models on their own data privately - nothing leaves the device!",
-      duration: 4000 
+      duration: 2000 
     },
     { 
       name: "Send Updates", 
       description: "Only the learned patterns (not raw data) are sent to the central server",
-      duration: 3000 
+      duration: 1000 
     },
     { 
       name: "Server Aggregation", 
       description: "The server combines all the patterns to improve the global model",
-      duration: 3000 
+      duration: 1000 
     },
     { 
       name: "Distribute Model", 
       description: "The improved model is sent back to all devices - everyone benefits!",
-      duration: 3000 
+      duration: 1000 
     },
   ];
 

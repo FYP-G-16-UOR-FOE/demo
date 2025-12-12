@@ -13,22 +13,22 @@ const TraditionalMLDiagram = () => {
     { 
       name: "Data Collection", 
       description: "All devices send their raw data to the central server",
-      duration: 3000 
+      duration: 1000 
     },
     { 
       name: "Centralized Training", 
       description: "Server trains the AI model on all collected data in one place",
-      duration: 3000 
+      duration: 2000 
     },
     { 
       name: "Model Update Distribution", 
       description: "The trained model is sent back to all devices",
-      duration: 3000 
+      duration: 1000 
     },
     { 
       name: "Clients Receive Model", 
       description: "Devices receive and deploy the updated model",
-      duration: 3000 
+      duration: 1000 
     },
   ];
 
