@@ -646,9 +646,10 @@ const OurSolution = () => {
                         </div>
                       </div>
                       <div className="p-6 rounded-xl bg-red-500/10 border-2 border-red-500/30 min-h-[140px] flex flex-col justify-center">
-                        <div className={`text-3xl font-bold text-red-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>
+                        {/*<div className={`text-3xl font-bold text-red-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>
                           3.14159265
                         </div>
+                        */}
                         <div className="text-xs text-muted-foreground">Decimal number</div>
                         <div className="mt-3 pt-3 border-t border-red-500/30">
                           <div className="text-sm font-bold text-red-600">4 bytes</div>
@@ -672,9 +673,10 @@ const OurSolution = () => {
                         </div>
                       </div>
                       <div className="p-6 rounded-xl bg-green-500/10 border-2 border-green-500/30 min-h-[140px] flex flex-col justify-center">
-                        <div className={`text-3xl font-bold text-green-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>
+                       {/* <div className={`text-3xl font-bold text-green-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>
                           127
                         </div>
+                        */}
                         <div className="text-xs text-muted-foreground">Simple integer</div>
                         <div className="mt-3 pt-3 border-t border-green-500/30">
                           <div className="text-sm font-bold text-green-600">1 byte</div>
@@ -684,6 +686,7 @@ const OurSolution = () => {
                   </div>
 
                   {/* More Examples */}
+                  {/*
                   <div className="grid grid-cols-3 gap-6">
                     <div className="p-4 rounded-lg bg-red-500/5 border border-red-500/20 text-center">
                       <div className="text-lg font-bold text-red-600 mb-1">-0.87654</div>
@@ -709,6 +712,7 @@ const OurSolution = () => {
                       <div className="text-xs text-muted-foreground">8-bit</div>
                     </div>
                   </div>
+                  */}
                 </div>
               </div>
 
@@ -774,7 +778,7 @@ const OurSolution = () => {
 
               {/* Communication Speed */}
               <div className="p-8 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
-                <h4 className="text-xl font-bold mb-6 text-center">Communication Speed Improvement</h4>
+                <h4 className="text-xl font-bold mb-6 text-center">Encryption Time Reduction</h4>
                 
                 <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto">
                   {/* Slow */}
@@ -784,9 +788,9 @@ const OurSolution = () => {
                       <div className="text-lg font-bold">Without Quantization</div>
                     </div>
                     <div className="p-6 rounded-xl bg-red-500/10 border-2 border-red-500/30">
-                      <div className="text-5xl font-bold text-red-600 mb-2">32s</div>
-                      <div className="text-sm text-muted-foreground">Upload time</div>
-                      <div className="mt-4 text-xs text-muted-foreground">(80 MB on 20 Mbps)</div>
+                      <div className="text-5xl font-bold text-red-600 mb-2">0.0672 s</div>
+                      <div className="text-sm text-muted-foreground">Model Encryption Time</div>
+                      {/*<div className="mt-4 text-xs text-muted-foreground">(80 MB on 20 Mbps)</div>*/}
                     </div>
                   </div>
                   
@@ -797,16 +801,16 @@ const OurSolution = () => {
                       <div className="text-lg font-bold">With Quantization</div>
                     </div>
                     <div className="p-6 rounded-xl bg-green-500/10 border-2 border-green-500/30">
-                      <div className={`text-5xl font-bold text-green-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>8s</div>
-                      <div className="text-sm text-muted-foreground">Upload time</div>
-                      <div className="mt-4 text-xs text-muted-foreground">(20 MB on 20 Mbps)</div>
+                      <div className={`text-5xl font-bold text-green-600 mb-2 ${animateFlow ? 'animate-pulse' : ''}`}>0.0097 s</div>
+                      <div className="text-sm text-muted-foreground">Model Encryption Time</div>
+                      {/*<div className="mt-4 text-xs text-muted-foreground">(20 MB on 20 Mbps)</div>*/}
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-8 text-center">
                   <div className="inline-block px-6 py-3 rounded-xl bg-primary/20 border-2 border-primary/30">
-                    <span className="text-2xl font-bold text-primary">4x Faster Training! 🚀</span>
+                    <span className="text-2xl font-bold text-primary">Faster Training! 🚀</span>
                   </div>
                 </div>
               </div>
@@ -814,11 +818,11 @@ const OurSolution = () => {
               {/* Simple Benefits */}
               <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/30">
                 <h4 className="text-lg font-bold mb-6 text-center">Why This Matters</h4>
-                <div className="grid grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div className="grid grid-flow-col auto-cols-max gap-4 justify-center max-w-4xl mx-auto">
                   <div className="text-center p-4 rounded-lg bg-card/50 border">
                     <div className="text-3xl mb-2">📦</div>
                     <div className="text-2xl font-bold text-success mb-1">75%</div>
-                    <p className="text-xs text-muted-foreground">Less Data</p>
+                    <p className="text-xs text-muted-foreground">model size reduced</p>
                   </div>
                   <div className="text-center p-4 rounded-lg bg-card/50 border">
                     <div className="text-3xl mb-2">⚡</div>
@@ -827,14 +831,15 @@ const OurSolution = () => {
                   </div>
                   <div className="text-center p-4 rounded-lg bg-card/50 border">
                     <div className="text-3xl mb-2">💰</div>
-                    <div className="text-2xl font-bold text-success mb-1">60%</div>
+                    <div className="text-2xl font-bold text-success mb-1">75%</div>
                     <p className="text-xs text-muted-foreground">Cost Savings</p>
                   </div>
-                  <div className="text-center p-4 rounded-lg bg-card/50 border">
+                  {/*<div className="text-center p-4 rounded-lg bg-card/50 border">
                     <div className="text-3xl mb-2">📱</div>
                     <div className="text-2xl font-bold text-success mb-1">✓</div>
                     <p className="text-xs text-muted-foreground">Mobile Friendly</p>
                   </div>
+                  */}
                 </div>
               </div>
             </div>
