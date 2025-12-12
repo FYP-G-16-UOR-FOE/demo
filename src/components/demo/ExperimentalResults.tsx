@@ -42,11 +42,11 @@ const ExperimentalResults = () => {
   ];
 
   const performanceMetrics = [
-    { metric: "Communication Cost", baseline: "100%", ours: "28%", improvement: "72% ↓" },
-    { metric: "Bandwidth Usage", baseline: "1.2 GB/round", ours: "0.34 GB/round", improvement: "72% ↓" },
-    { metric: "Encryption Time", baseline: "850 ms", ours: "245 ms", improvement: "71% ↓" },
-    { metric: "Decryption Time", baseline: "920 ms", ours: "268 ms", improvement: "71% ↓" },
-    { metric: "Training Time/Round", baseline: "12.5 min", ours: "4.8 min", improvement: "62% ↓" },
+    { metric: "Communication Cost", baseline: "78.53MB", ours: "19.64MB", improvement: "75% " },
+   {/* { metric: "Bandwidth Usage", baseline: "1.2 GB/round", ours: "0.34 GB/round", improvement: "72% ↓" },*/},
+    { metric: "Encryption Time", baseline: "0.0672 s", ours: "0.0097 s", improvement: "85.56% " },
+    {/*{ metric: "Decryption Time", baseline: "920 ms", ours: "268 ms", improvement: "71% ↓" },*/},
+    { metric: "Avg FL Round Time", baseline: "61.33 s", ours: "54.58 s", improvement: "11% " },
   ];
 
   const getTrendIcon = (trend: string) => {
@@ -432,15 +432,15 @@ const ExperimentalResults = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Card className="p-6 bg-gradient-to-br from-primary/10 to-primary/5 animate-scale-in">
-                <div className="text-4xl font-bold text-primary mb-2">72%</div>
+                <div className="text-4xl font-bold text-primary mb-2">75%</div>
                 <p className="text-sm text-muted-foreground">Reduction in communication cost through quantization</p>
               </Card>
               <Card className="p-6 bg-gradient-to-br from-success/10 to-success/5 animate-scale-in" style={{ animationDelay: "0.1s" }}>
-                <div className="text-4xl font-bold text-success mb-2">71%</div>
+                <div className="text-4xl font-bold text-success mb-2">85.56%</div>
                 <p className="text-sm text-muted-foreground">Faster encryption/decryption with quantized models</p>
               </Card>
               <Card className="p-6 bg-gradient-to-br from-secondary/10 to-secondary/5 animate-scale-in" style={{ animationDelay: "0.2s" }}>
-                <div className="text-4xl font-bold text-secondary mb-2">62%</div>
+                <div className="text-4xl font-bold text-secondary mb-2">11%</div>
                 <p className="text-sm text-muted-foreground">Reduction in training time per round</p>
               </Card>
             </div>
@@ -449,7 +449,7 @@ const ExperimentalResults = () => {
       </Card>
 
       {/* Overall Summary */}
-      {/* <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
+    {/*  <Card className="p-8 bg-gradient-to-br from-success/5 via-primary/5 to-secondary/5">
         <h3 className="text-2xl font-bold mb-6">Overall Impact</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -503,7 +503,8 @@ const ExperimentalResults = () => {
             </ul>
           </div>
         </div>
-      </Card> */}
+      </Card>
+      */}
     </div>
   );
 };

@@ -1,11 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { AlertTriangle, TrendingDown, Shield, Gauge } from "lucide-react";
+import { AlertTriangle, TrendingDown, Shield, Gauge, Lock, HelpCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SecurityAnimation from "./SecurityAnimation";
 
 const TraditionalIssues = () => {
   const [hoveredIssue, setHoveredIssue] = useState<string | null>(null);
+  const [percent, setPercent] = useState(0);
+
+  // simulate encryption progress; when percent >= 70 show the warning/question icon
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPercent((p) => {
+        const next = p + 6; // speed of simulation
+        return next > 100 ? 0 : next;
+      });
+    }, 200);
+    return () => clearInterval(id);
+  }, []);
 
   return (
     <div className="space-y-12">
@@ -191,28 +203,36 @@ const TraditionalIssues = () => {
             <div className="space-y-6">
               {/* Slow Convergence */}
               <div className="p-6 rounded-xl bg-gradient-to-br from-destructive/10 to-transparent border border-destructive/20">
-                <h4 className="font-semibold mb-4">Slow Convergence Rate</h4>
+                <h4 className="font-semibold mb-4">High computational cost for encryption</h4>
                 <div className="space-y-4">
-                  <div className="relative h-32 bg-card/50 rounded-lg p-4">
-                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-border" />
-                    {/* Traditional FL - slow convergence */}
-                    <svg className="w-full h-full" viewBox="0 0 400 100">
-                      <path
-                        d="M 10 90 Q 50 80, 100 70 T 200 60 T 300 55 T 390 52"
-                        fill="none"
-                        stroke="hsl(var(--destructive))"
-                        strokeWidth="3"
-                        className="animate-pulse"
-                      />
-                    </svg>
-                    <p className="text-xs text-destructive font-medium mt-2">Traditional FL: Many rounds needed</p>
+                  <div className="relative h-32 bg-card/50 rounded-lg p-4 flex items-center justify-center">
+                    <div className="w-full max-w-md">
+                      <div className="flex items-center justify-center gap-3 mb-3">
+                        <Lock className="w-6 h-6 text-destructive" />
+                        <p className="font-semibold">Encrypting...</p>
+                      </div>
+
+                      <div className="text-xs text-muted-foreground mb-2">Encryption Progress</div>
+                      <div className="h-3 bg-destructive/20 rounded relative overflow-visible">
+                        <div
+                          className="h-full bg-destructive transition-all duration-200"
+                          style={{ width: `${percent}%` }}
+                        />
+                      </div>
+                      {percent >= 70 && (
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                          <HelpCircle className="w-5 h-5 text-destructive animate-pulse" aria-hidden />
+                          <div className="text-xs text-destructive mt-1">High</div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Communication Cost */}
               <div className="p-6 rounded-xl bg-gradient-to-br from-destructive/10 to-transparent border border-destructive/20">
-                <h4 className="font-semibold mb-4">High Communication Overhead</h4>
+                <h4 className="font-semibold mb-4">High Communicational Overhead</h4>
                 <div className="grid grid-cols-3 gap-4">
                   {[1, 2, 3].map((round) => (
                     <div key={round} className="text-center">
@@ -233,7 +253,8 @@ const TraditionalIssues = () => {
                 </p>
               </div>
 
-              {/* Accuracy Drop */}
+             {/* Accuracy Drop */}
+              {/*
               <div className="p-6 rounded-xl bg-gradient-to-br from-destructive/10 to-transparent border border-destructive/20">
                 <h4 className="font-semibold mb-4">Accuracy Degradation</h4>
                 <div className="flex items-center justify-between gap-8">
@@ -251,6 +272,7 @@ const TraditionalIssues = () => {
                   Significant accuracy loss due to non-IID data and attacks
                 </p>
               </div>
+              */}
             </div>
           </Card>
         </TabsContent>
