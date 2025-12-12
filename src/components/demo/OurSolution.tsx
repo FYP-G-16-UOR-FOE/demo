@@ -71,29 +71,101 @@ const OurSolution = () => {
                   <div className="flex-1 pb-8">
                     <h4 className="font-semibold mb-3">Data Distribution Analysis</h4>
                     <div className="grid grid-cols-3 gap-4">
-                      {[1, 2, 3].map((device) => (
-                        <div key={device} className="p-4 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
-                          <p className="text-xs font-medium mb-2">Device {device}</p>
-                          <div className="space-y-1">
-                            {['A', 'B', 'C', 'D'].map((cls) => (
-                              <div key={cls} className="flex items-center gap-2">
-                                <span className="text-xs w-4">{cls}:</span>
-                                <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-                                  <div 
-                                    className="h-full bg-success transition-all duration-500"
-                                    style={{ width: `${Math.random() * 100}%` }}
-                                  />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                          {animateFlow && (
-                            <div className="mt-2 text-xs text-success animate-fade-in">
-                              ✓ Analyzed
+                      {/* Device 1 - Only Class A */}
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
+                        <p className="text-xs font-medium mb-2">Device 1</p>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">A:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '100%' }} />
                             </div>
-                          )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">B:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '0%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">C:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '0%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">D:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '0%' }} />
+                            </div>
+                          </div>
                         </div>
-                      ))}
+                        <div className="mt-2 text-xs text-muted-foreground">1 class only</div>
+                      </div>
+                      
+                      {/* Device 2 - Two Classes (A and B) */}
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
+                        <p className="text-xs font-medium mb-2">Device 2</p>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">A:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '70%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">B:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '60%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">C:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '0%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">D:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '0%' }} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2 text-xs text-muted-foreground">2 classes</div>
+                      </div>
+                      
+                      {/* Device 3 - All Classes */}
+                      <div className="p-4 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
+                        <p className="text-xs font-medium mb-2">Device 3</p>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">A:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '80%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">B:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '65%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">C:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '75%' }} />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs w-4">D:</span>
+                            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+                              <div className="h-full bg-success" style={{ width: '55%' }} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-2 text-xs text-muted-foreground">All classes</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -110,35 +182,12 @@ const OurSolution = () => {
                   </div>
                   <div className="flex-1 pb-8">
                     <h4 className="font-semibold mb-3">Intelligent Weight Assignment</h4>
-                    <div className="p-6 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/30">
-                      <div className="flex items-center justify-center gap-8">
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">📱</div>
-                          <p className="text-xs mb-1">Device 1</p>
-                          <div className="text-lg font-bold text-primary">0.2</div>
-                        </div>
-                        <div className="text-2xl text-muted-foreground">+</div>
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">📱</div>
-                          <p className="text-xs mb-1">Device 2</p>
-                          <div className="text-lg font-bold text-primary">0.5</div>
-                        </div>
-                        <div className="text-2xl text-muted-foreground">+</div>
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">📱</div>
-                          <p className="text-xs mb-1">Device 3</p>
-                          <div className="text-lg font-bold text-primary">0.3</div>
-                        </div>
-                        <div className="text-2xl text-muted-foreground">=</div>
-                        <div className="text-center">
-                          <div className="text-2xl mb-2">🎯</div>
-                          <p className="text-xs mb-1">Balanced</p>
-                          <div className="text-lg font-bold text-success">Model</div>
-                        </div>
-                      </div>
-                      <p className="text-xs text-center text-muted-foreground mt-4">
-                        Weights adjusted based on data quality and distribution
-                      </p>
+                    <div className="p-4 rounded-xl bg-gradient-to-br from-primary/10 to-transparent border border-primary/30">
+                      <img 
+                        src="./images/Weigh.png" 
+                        alt="Intelligent Weight Assignment Diagram" 
+                        className="w-full h-auto rounded-lg"
+                      />
                     </div>
                   </div>
                 </div>
@@ -157,12 +206,12 @@ const OurSolution = () => {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="p-6 rounded-xl bg-destructive/10 border border-destructive/30 text-center">
                         <p className="text-sm text-muted-foreground mb-2">Before</p>
-                        <div className="text-4xl font-bold text-destructive mb-2">73%</div>
-                        <p className="text-xs text-muted-foreground">Traditional FL</p>
+                        <div className="text-4xl font-bold text-destructive mb-2">66.06%</div>
+                        <p className="text-xs text-muted-foreground">Traditional FL(FedAvg)</p>
                       </div>
                       <div className="p-6 rounded-xl bg-success/10 border border-success/30 text-center animate-pulse-glow">
                         <p className="text-sm text-muted-foreground mb-2">After</p>
-                        <div className="text-4xl font-bold text-success mb-2">92%</div>
+                        <div className="text-4xl font-bold text-success mb-2">72.01%</div>
                         <p className="text-xs text-muted-foreground">Our Solution</p>
                       </div>
                     </div>

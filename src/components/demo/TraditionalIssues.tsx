@@ -56,92 +56,194 @@ const TraditionalIssues = () => {
 
         {/* Non-IID Data Issue */}
         <TabsContent value="non-iid" className="mt-8 space-y-8">
-          <Card className="p-8 bg-card/50 backdrop-blur border-destructive/20">
-            <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
+          <Card className="p-6 bg-card/50 backdrop-blur border-destructive/20">
+            <h3 className="text-2xl font-bold mb-4 flex items-center gap-3">
               <TrendingDown className="w-7 h-7 text-destructive" />
               Non-IID Data Distribution
             </h3>
-            
-            {/* Visual Comparison */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-              {/* IID Data */}
-              <div className="space-y-4">
-                <div className="text-center mb-4">
-                  <span className="px-4 py-2 bg-success/20 text-success rounded-full text-sm font-medium">
-                    IID (Ideal)
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  {[1, 2, 3].map((device) => (
-                    <div key={device} className="p-4 rounded-xl bg-success/10 border border-success/30">
-                      <p className="text-xs font-medium mb-2">Device {device}</p>
-                      <div className="flex gap-1">
-                        {['bg-destructive', 'bg-primary', 'bg-success', 'bg-warning'].map((color) => (
-                          <div
-                            key={color}
-                            className={`h-8 flex-1 rounded ${color}`}
-                          />
-                        ))}
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2 text-center">Balanced Data</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Non-IID Data */}
-              <div className="space-y-4">
-                <div className="text-center mb-4">
-                  <span className="px-4 py-2 bg-destructive/20 text-destructive rounded-full text-sm font-medium">
-                    Non-IID (Problem)
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
-                    <p className="text-xs font-medium mb-2">Device 1</p>
-                    <div className="flex gap-1">
-                      <div className="h-8 flex-[3] bg-destructive rounded" />
-                      <div className="h-8 flex-[1] bg-primary rounded" />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2 text-center">Skewed Distribution</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
-                    <p className="text-xs font-medium mb-2">Device 2</p>
-                    <div className="flex gap-1">
-                      <div className="h-8 flex-[1] bg-success rounded" />
-                      <div className="h-8 flex-[3] bg-warning rounded" />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2 text-center">Unbalanced Classes</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30">
-                    <p className="text-xs font-medium mb-2">Device 3</p>
-                    <div className="flex gap-1">
-                      <div className="h-8 flex-[2] bg-primary rounded" />
-                      <div className="h-8 flex-[2] bg-success rounded" />
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-2 text-center">Different Patterns</p>
-                  </div>
-                </div>
-              </div>
+            <p className="text-muted-foreground mb-6">
+              Visualization of data heterogeneity challenges in federated learning environments
+            </p>
+            <div className="w-full">
+              <img 
+                src="./images/nonIID-issue.png" 
+                alt="Non-IID Data Distribution Issue" 
+                className="w-full h-auto rounded-xl border-2 border-destructive/30 shadow-lg"
+              />
             </div>
+          </Card>
 
-            {/* Impact */}
-            <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
-              <h4 className="font-semibold mb-3 text-destructive">Impact on Model:</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-destructive mt-1">•</span>
-                  <span>Model bias towards data-rich devices</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-destructive mt-1">•</span>
-                  <span>Poor performance on underrepresented classes</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-destructive mt-1">•</span>
-                  <span>Slow convergence and unstable training</span>
-                </li>
-              </ul>
+          {/* IID vs Non-IID Distribution Comparison - Column Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* IID Data Distribution - Bar Chart */}
+            <Card className="p-6 bg-card/50 backdrop-blur border-success/20">
+              <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-success">
+                <span className="w-3 h-3 rounded-full bg-success"></span>
+                IID Data Distribution (Ideal)
+              </h4>
+              <p className="text-sm text-muted-foreground mb-6">
+                Each device has balanced samples from all 4 classes
+              </p>
+              
+              {/* Bar Chart for IID */}
+              <div className="space-y-6">
+                {['Device 1', 'Device 2', 'Device 3'].map((device, idx) => (
+                  <div key={idx} className="p-4 rounded-lg bg-success/5 border border-success/20">
+                    <p className="text-sm font-medium mb-3">{device}</p>
+                    <div className="flex items-end justify-around gap-2 h-32">
+                      {/* Class A */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 bg-blue-500 rounded-t" style={{ height: '80px' }}></div>
+                        <span className="text-xs mt-1 font-medium">A</span>
+                        <span className="text-[10px] text-muted-foreground">25%</span>
+                      </div>
+                      {/* Class B */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 bg-green-500 rounded-t" style={{ height: '80px' }}></div>
+                        <span className="text-xs mt-1 font-medium">B</span>
+                        <span className="text-[10px] text-muted-foreground">25%</span>
+                      </div>
+                      {/* Class C */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 bg-yellow-500 rounded-t" style={{ height: '80px' }}></div>
+                        <span className="text-xs mt-1 font-medium">C</span>
+                        <span className="text-[10px] text-muted-foreground">25%</span>
+                      </div>
+                      {/* Class D */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-10 bg-red-500 rounded-t" style={{ height: '80px' }}></div>
+                        <span className="text-xs mt-1 font-medium">D</span>
+                        <span className="text-[10px] text-muted-foreground">25%</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 p-3 rounded-lg bg-success/10 border border-success/30">
+                <p className="text-xs text-success font-medium">✓ Uniform distribution across all devices</p>
+                <p className="text-xs text-muted-foreground mt-1">Model learns equally from all classes</p>
+              </div>
+            </Card>
+
+            {/* Non-IID Data Distribution - Bar Chart */}
+            <Card className="p-6 bg-card/50 backdrop-blur border-destructive/20">
+              <h4 className="text-xl font-bold mb-4 flex items-center gap-2 text-destructive">
+                <span className="w-3 h-3 rounded-full bg-destructive"></span>
+                Non-IID Data Distribution (Problem)
+              </h4>
+              <p className="text-sm text-muted-foreground mb-6">
+                Each device has imbalanced samples across 4 classes
+              </p>
+              
+              {/* Bar Chart for Non-IID */}
+              <div className="space-y-6">
+                {/* Device 1 - Only Class A and B */}
+                <div className="p-4 rounded-lg bg-destructive/5 border border-destructive/20">
+                  <p className="text-sm font-medium mb-3">Device 1</p>
+                  <div className="flex items-end justify-around gap-2 h-32">
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-blue-500 rounded-t" style={{ height: '90px' }}></div>
+                      <span className="text-xs mt-1 font-medium">A</span>
+                      <span className="text-[10px] text-muted-foreground">60%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-green-500 rounded-t" style={{ height: '60px' }}></div>
+                      <span className="text-xs mt-1 font-medium">B</span>
+                      <span className="text-[10px] text-muted-foreground">40%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-yellow-500/30 rounded-t" style={{ height: '0px' }}></div>
+                      <span className="text-xs mt-1 font-medium text-muted-foreground">C</span>
+                      <span className="text-[10px] text-muted-foreground">0%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-red-500/30 rounded-t" style={{ height: '0px' }}></div>
+                      <span className="text-xs mt-1 font-medium text-muted-foreground">D</span>
+                      <span className="text-[10px] text-muted-foreground">0%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Device 2 - Heavy on Class B and C */}
+                <div className="p-4 rounded-lg bg-destructive/5 border border-destructive/20">
+                  <p className="text-sm font-medium mb-3">Device 2</p>
+                  <div className="flex items-end justify-around gap-2 h-32">
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-blue-500 rounded-t" style={{ height: '8px' }}></div>
+                      <span className="text-xs mt-1 font-medium">A</span>
+                      <span className="text-[10px] text-muted-foreground">5%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-green-500 rounded-t" style={{ height: '64px' }}></div>
+                      <span className="text-xs mt-1 font-medium">B</span>
+                      <span className="text-[10px] text-muted-foreground">40%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-yellow-500 rounded-t" style={{ height: '72px' }}></div>
+                      <span className="text-xs mt-1 font-medium">C</span>
+                      <span className="text-[10px] text-muted-foreground">45%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-red-500 rounded-t" style={{ height: '16px' }}></div>
+                      <span className="text-xs mt-1 font-medium">D</span>
+                      <span className="text-[10px] text-muted-foreground">10%</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Device 3 - Heavy on Class D */}
+                <div className="p-4 rounded-lg bg-destructive/5 border border-destructive/20">
+                  <p className="text-sm font-medium mb-3">Device 3</p>
+                  <div className="flex items-end justify-around gap-2 h-32">
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-blue-500 rounded-t" style={{ height: '16px' }}></div>
+                      <span className="text-xs mt-1 font-medium">A</span>
+                      <span className="text-[10px] text-muted-foreground">10%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-green-500 rounded-t" style={{ height: '8px' }}></div>
+                      <span className="text-xs mt-1 font-medium">B</span>
+                      <span className="text-[10px] text-muted-foreground">5%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-yellow-500 rounded-t" style={{ height: '24px' }}></div>
+                      <span className="text-xs mt-1 font-medium">C</span>
+                      <span className="text-[10px] text-muted-foreground">15%</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-10 bg-red-500 rounded-t" style={{ height: '100px' }}></div>
+                      <span className="text-xs mt-1 font-medium">D</span>
+                      <span className="text-[10px] text-muted-foreground">70%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-4 p-3 rounded-lg bg-destructive/10 border border-destructive/30">
+                <p className="text-xs text-destructive font-medium">✗ Skewed distribution causes bias</p>
+                <p className="text-xs text-muted-foreground mt-1">Model struggles with underrepresented classes</p>
+              </div>
+            </Card>
+          </div>
+
+          {/* Class Legend */}
+          <Card className="p-4 bg-card/50 backdrop-blur">
+            <div className="flex flex-wrap justify-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-blue-500 rounded"></div>
+                <span className="text-sm">Class A</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500 rounded"></div>
+                <span className="text-sm">Class B</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-yellow-500 rounded"></div>
+                <span className="text-sm">Class C</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-red-500 rounded"></div>
+                <span className="text-sm">Class D</span>
+              </div>
             </div>
           </Card>
         </TabsContent>
