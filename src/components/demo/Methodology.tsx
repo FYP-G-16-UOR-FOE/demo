@@ -38,8 +38,8 @@ const Methodology = () => {
       {/* Process Overview */}
       <Card className="p-8 bg-gradient-to-br from-card via-card/80 to-accent/5">
         <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-          <h2 className="text-3xl font-bold flex items-center gap-3 text-center md:text-left">
-            <Zap className="w-8 h-8 text-primary animate-pulse-glow" />
+          <h2 className="text-xl md:text-3xl font-bold flex items-center gap-3 text-center md:text-left">
+            <Zap className="w-6 h-6 md:w-8 md:h-8 text-primary animate-pulse-glow" />
             Complete Workflow
           </h2>
           
@@ -78,12 +78,12 @@ const Methodology = () => {
                     activeStep === index ? 'scale-110' : 'scale-90 opacity-50'
                   }`}
                 >
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center ${
+                  <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center ${
                     activeStep === index
                       ? `bg-${step.color} animate-pulse-glow shadow-lg`
                       : `bg-${step.color}/20`
                   } transition-all duration-500`}>
-                    <Icon className={`w-8 h-8 ${
+                    <Icon className={`w-6 h-6 md:w-8 md:h-8 ${
                       activeStep === index ? 'text-white' : `text-${step.color}`
                     }`} />
                   </div>
@@ -112,16 +112,16 @@ const Methodology = () => {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="relative">
-                    <Smartphone className="w-24 h-24 mx-auto text-primary animate-pulse" />
-                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary">Client</Badge>
+                    <Smartphone className="w-16 h-16 md:w-24 md:h-24 mx-auto text-primary animate-pulse" />
+                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-[10px] md:text-xs">Client</Badge>
                   </div>
                 </div>
                 
                 <div className="flex-1 flex flex-col items-center gap-4">
                   <div className="relative w-full">
-                    <ArrowRight className="w-16 h-16 text-success animate-data-flow" />
+                    <ArrowRight className="w-10 h-10 md:w-16 md:h-16 text-success animate-data-flow" />
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                      <Shield className="w-8 h-8 text-success animate-pulse-glow" />
+                      <Shield className="w-6 h-6 md:w-8 md:h-8 text-success animate-pulse-glow" />
                     </div>
                   </div>
                   <p className="text-sm font-medium text-center">mTLS Handshake</p>
@@ -132,8 +132,8 @@ const Methodology = () => {
                 
                 <div className="flex-1">
                   <div className="relative">
-                    <Server className="w-24 h-24 mx-auto text-secondary animate-pulse" />
-                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary">Server</Badge>
+                    <Server className="w-16 h-16 md:w-24 md:h-24 mx-auto text-secondary animate-pulse" />
+                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-secondary text-[10px] md:text-xs">Server</Badge>
                   </div>
                 </div>
               </div>
@@ -149,8 +149,8 @@ const Methodology = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Card className="p-6 bg-secondary/5 border-secondary/30 animate-slide-in-left">
-                  <Server className="w-16 h-16 text-secondary mb-4 animate-spin-slow" />
+                <Card className="p-4 md:p-6 bg-secondary/5 border-secondary/30 animate-slide-in-left">
+                  <Server className="w-12 h-12 md:w-16 md:h-16 text-secondary mb-4 animate-spin-slow" />
                   <h4 className="font-bold mb-2">Server Actions</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2">
@@ -168,8 +168,8 @@ const Methodology = () => {
                   </div>
                 </Card>
 
-                <Card className="p-6 bg-primary/5 border-primary/30 animate-slide-in-right">
-                  <Smartphone className="w-16 h-16 text-primary mb-4" />
+                <Card className="p-4 md:p-6 bg-primary/5 border-primary/30 animate-slide-in-right">
+                  <Smartphone className="w-12 h-12 md:w-16 md:h-16 text-primary mb-4" />
                   <h4 className="font-bold mb-2">Client Actions</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2">
@@ -197,7 +197,7 @@ const Methodology = () => {
               <div className="space-y-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <Card className="w-full md:flex-1 p-4 bg-primary/5 border-primary/30 animate-slide-in-left">
-                    <Smartphone className="w-12 h-12 text-primary mb-2" />
+                    <Smartphone className="w-10 h-10 md:w-12 md:h-12 text-primary mb-2" />
                     <p className="text-sm font-medium">Client encrypts with Public Key</p>
                     <div className="mt-4 p-3 bg-background rounded-lg">
                       <code className="text-xs text-success animate-pulse">KEM.encap() → Cipher</code>
@@ -207,7 +207,7 @@ const Methodology = () => {
                   <ArrowRight className="w-12 h-12 text-success mx-4 animate-data-flow rotate-90 md:rotate-0" />
                   
                   <Card className="w-full md:flex-1 p-4 bg-secondary/5 border-secondary/30 animate-slide-in-right">
-                    <Server className="w-12 h-12 text-secondary mb-2" />
+                    <Server className="w-10 h-10 md:w-12 md:h-12 text-secondary mb-2" />
                     <p className="text-sm font-medium">Server decapsulates Cipher</p>
                     <div className="mt-4 p-3 bg-background rounded-lg">
                       <code className="text-xs text-warning animate-pulse">KEM.decap() → Shared Key</code>
@@ -237,8 +237,8 @@ const Methodology = () => {
               <div className="space-y-4">
                 <Card className="p-6 bg-primary/5 border-primary/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Smartphone className="w-12 h-12 text-primary animate-pulse" />
-                    <h4 className="text-xl font-bold">Client Processing</h4>
+                    <Smartphone className="w-10 h-10 md:w-12 md:h-12 text-primary animate-pulse" />
+                    <h4 className="text-lg md:text-xl font-bold">Client Processing</h4>
                   </div>
                   
                   <div className="space-y-4">
@@ -302,8 +302,8 @@ const Methodology = () => {
               <div className="space-y-6">
                 <Card className="p-6 bg-warning/5 border-warning/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Zap className="w-12 h-12 text-warning animate-pulse" />
-                    <h4 className="text-xl font-bold">Quantization Process</h4>
+                    <Zap className="w-10 h-10 md:w-12 md:h-12 text-warning animate-pulse" />
+                    <h4 className="text-lg md:text-xl font-bold">Quantization Process</h4>
                   </div>
                   
                   <div className="space-y-4">
@@ -377,8 +377,8 @@ const Methodology = () => {
               <div className="space-y-6">
                 <Card className="p-6 bg-success/5 border-success/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Lock className="w-12 h-12 text-success animate-pulse" />
-                    <h4 className="text-xl font-bold">Encryption Process</h4>
+                    <Lock className="w-10 h-10 md:w-12 md:h-12 text-success animate-pulse" />
+                    <h4 className="text-lg md:text-xl font-bold">Encryption Process</h4>
                   </div>
                   
                   <div className="space-y-4">
@@ -445,7 +445,7 @@ const Methodology = () => {
               
               <div className="relative">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:block">
-                  <Server className="w-20 h-20 text-secondary animate-pulse-glow" />
+                  <Server className="w-16 h-16 md:w-20 md:h-20 text-secondary animate-pulse-glow" />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
@@ -491,8 +491,8 @@ const Methodology = () => {
               <div className="space-y-6">
                 <Card className="p-6 bg-gradient-to-br from-secondary/10 to-primary/10 border-primary/30">
                   <div className="flex items-center justify-center gap-4 mb-6">
-                    <Server className="w-16 h-16 text-secondary animate-pulse" />
-                    <h4 className="text-xl font-bold">Server Aggregation</h4>
+                    <Server className="w-12 h-12 md:w-16 md:h-16 text-secondary animate-pulse" />
+                    <h4 className="text-lg md:text-xl font-bold">Server Aggregation</h4>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -556,8 +556,8 @@ const Methodology = () => {
               <div className="space-y-6">
                 <Card className="p-6 bg-success/5 border-success/30">
                   <div className="flex items-center gap-4 mb-4">
-                    <Lock className="w-12 h-12 text-success animate-pulse" />
-                    <h4 className="text-xl font-bold">Encryption Process</h4>
+                    <Lock className="w-10 h-10 md:w-12 md:h-12 text-success animate-pulse" />
+                    <h4 className="text-lg md:text-xl font-bold">Encryption Process</h4>
                   </div>
                   
                   <div className="space-y-4">
@@ -648,24 +648,24 @@ const Methodology = () => {
       <Card className="p-8 bg-gradient-to-br from-success/5 to-primary/5">
         <h3 className="text-2xl font-bold mb-6">Key Benefits</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-6 bg-background/50 rounded-xl border border-border">
-            <Shield className="w-12 h-12 text-success mb-4 animate-pulse-glow" />
+          <div className="p-4 md:p-6 bg-background/50 rounded-xl border border-border">
+            <Shield className="w-10 h-10 md:w-12 md:h-12 text-success mb-4 animate-pulse-glow" />
             <h4 className="font-bold mb-2">End-to-End Security</h4>
             <p className="text-sm text-muted-foreground">
               mTLS + KEM encryption + quantization ensures models are encrypted throughout transmission
             </p>
           </div>
           
-          <div className="p-6 bg-background/50 rounded-xl border border-border">
-            <Zap className="w-12 h-12 text-warning mb-4 animate-pulse" />
+          <div className="p-4 md:p-6 bg-background/50 rounded-xl border border-border">
+            <Zap className="w-10 h-10 md:w-12 md:h-12 text-warning mb-4 animate-pulse" />
             <h4 className="font-bold mb-2">Optimized Performance</h4>
             <p className="text-sm text-muted-foreground">
               Quantization reduces bandwidth by up to 75% and speeds up encryption/decryption
             </p>
           </div>
           
-          <div className="p-6 bg-background/50 rounded-xl border border-border">
-            <Database className="w-12 h-12 text-primary mb-4 animate-pulse" />
+          <div className="p-4 md:p-6 bg-background/50 rounded-xl border border-border">
+            <Database className="w-10 h-10 md:w-12 md:h-12 text-primary mb-4 animate-pulse" />
             <h4 className="font-bold mb-2">Smart Aggregation</h4>
             <p className="text-sm text-muted-foreground">
               JS divergence + accuracy weighting handles non-IID data effectively
