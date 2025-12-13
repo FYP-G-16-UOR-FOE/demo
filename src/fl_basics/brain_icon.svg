@@ -1,0 +1,23 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Left Hemisphere -->
+<path d="M48 20C48 15.5 45 12 40 12C32 12 24 16 18 24C14 30 12 38 12 48C12 65 22 80 36 86C42 88.5 48 86 48 80V20Z" stroke="#4285f4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M25 30L35 30M20 50L30 50M28 70L38 70" stroke="#4285f4" stroke-width="3" stroke-linecap="round"/>
+<circle cx="35" cy="30" r="2.5" fill="#4285f4"/>
+<circle cx="30" cy="50" r="2.5" fill="#4285f4"/>
+<circle cx="28" cy="70" r="2.5" fill="#4285f4"/>
+
+<!-- Right Hemisphere -->
+<path d="M52 20C52 15.5 55 12 60 12C68 12 76 16 82 24C86 30 88 38 88 48C88 65 78 80 64 86C58 88.5 52 86 52 80V20Z" stroke="#4285f4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M75 30L65 30M80 50L70 50M72 70L62 70" stroke="#4285f4" stroke-width="3" stroke-linecap="round"/>
+<circle cx="65" cy="30" r="2.5" fill="#4285f4"/>
+<circle cx="70" cy="50" r="2.5" fill="#4285f4"/>
+<circle cx="72" cy="70" r="2.5" fill="#4285f4"/>
+
+<!-- Central Connections -->
+<path d="M48 35H52M48 55H52M48 75H52" stroke="#4285f4" stroke-width="3" stroke-linecap="round"/>
+
+<!-- Circuit Details -->
+<path d="M40 12V22M60 12V22" stroke="#4285f4" stroke-width="3" stroke-linecap="round"/>
+<circle cx="40" cy="22" r="2.5" fill="#4285f4"/>
+<circle cx="60" cy="22" r="2.5" fill="#4285f4"/>
+</svg>

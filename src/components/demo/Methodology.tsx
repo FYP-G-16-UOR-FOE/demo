@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Lock, Key, Server, Smartphone, ArrowRight, Shield, Zap, Database, Play, Pause, RotateCcw } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ArrowRight, Database, Key, Lock, Pause, Play, RotateCcw, Server, Shield, Smartphone, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const Methodology = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -37,19 +37,19 @@ const Methodology = () => {
     <div className="space-y-8">
       {/* Process Overview */}
       <Card className="p-8 bg-gradient-to-br from-card via-card/80 to-accent/5">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-bold flex items-center gap-3">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
+          <h2 className="text-3xl font-bold flex items-center gap-3 text-center md:text-left">
             <Zap className="w-8 h-8 text-primary animate-pulse-glow" />
             Complete Workflow
           </h2>
           
           {/* Playback Controls */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2 w-full md:w-auto">
             <Button
               onClick={() => setIsPlaying(!isPlaying)}
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {isPlaying ? "Pause" : "Play"}
@@ -58,7 +58,7 @@ const Methodology = () => {
               onClick={handleReset}
               variant="outline"
               size="sm"
-              className="gap-2"
+              className="gap-2 w-full sm:w-auto"
             >
               <RotateCcw className="w-4 h-4" />
               Reset
@@ -148,7 +148,7 @@ const Methodology = () => {
                 <p className="text-muted-foreground">Server generates KEM key pair</p>
               </div>
               
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card className="p-6 bg-secondary/5 border-secondary/30 animate-slide-in-left">
                   <Server className="w-16 h-16 text-secondary mb-4 animate-spin-slow" />
                   <h4 className="font-bold mb-2">Server Actions</h4>
@@ -195,8 +195,8 @@ const Methodology = () => {
               </div>
               
               <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <Card className="flex-1 p-4 bg-primary/5 border-primary/30 animate-slide-in-left">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                  <Card className="w-full md:flex-1 p-4 bg-primary/5 border-primary/30 animate-slide-in-left">
                     <Smartphone className="w-12 h-12 text-primary mb-2" />
                     <p className="text-sm font-medium">Client encrypts with Public Key</p>
                     <div className="mt-4 p-3 bg-background rounded-lg">
@@ -204,9 +204,9 @@ const Methodology = () => {
                     </div>
                   </Card>
                   
-                  <ArrowRight className="w-12 h-12 text-success mx-4 animate-data-flow" />
+                  <ArrowRight className="w-12 h-12 text-success mx-4 animate-data-flow rotate-90 md:rotate-0" />
                   
-                  <Card className="flex-1 p-4 bg-secondary/5 border-secondary/30 animate-slide-in-right">
+                  <Card className="w-full md:flex-1 p-4 bg-secondary/5 border-secondary/30 animate-slide-in-right">
                     <Server className="w-12 h-12 text-secondary mb-2" />
                     <p className="text-sm font-medium">Server decapsulates Cipher</p>
                     <div className="mt-4 p-3 bg-background rounded-lg">
@@ -345,7 +345,7 @@ const Methodology = () => {
                 {/* Quantization Visualization */}
                 <Card className="p-6 bg-background/50 border-border">
                   <h4 className="font-bold mb-4 text-center">Compression Benefits</h4>
-                  <div className="grid grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="text-center p-4 bg-destructive/10 rounded-lg border border-destructive/30">
                       <p className="text-sm text-muted-foreground mb-2">Before Quantization</p>
                       <div className="text-3xl font-bold text-destructive mb-1">100 MB</div>
@@ -444,11 +444,11 @@ const Methodology = () => {
               </div>
               
               <div className="relative">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 hidden md:block">
                   <Server className="w-20 h-20 text-secondary animate-pulse-glow" />
                 </div>
 
-                <div className="grid grid-cols-3 gap-4 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                   {[1, 2, 3].map((client, idx) => (
                     <Card key={client} className="p-4 bg-primary/5 border-primary/30 animate-scale-in" style={{ animationDelay: `${idx * 0.1}s` }}>
                       <Smartphone className="w-8 h-8 text-primary mx-auto mb-2" />

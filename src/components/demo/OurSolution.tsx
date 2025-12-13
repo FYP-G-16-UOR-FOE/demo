@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Shield, Zap, TrendingUp, Filter, Lock, Gauge } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckCircle, Filter, Gauge, Lock, Shield, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const OurSolution = () => {
   const [animateFlow, setAnimateFlow] = useState(false);
@@ -34,7 +34,7 @@ const OurSolution = () => {
 
       {/* Solution Categories */}
       <Tabs defaultValue="non-iid" className="w-full">
-        <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 h-auto bg-card/50 backdrop-blur p-2 rounded-2xl">
+        <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-1 md:grid-cols-3 h-auto bg-card/50 backdrop-blur p-2 rounded-2xl gap-2 md:gap-0">
           <TabsTrigger value="non-iid" className="rounded-xl py-3 data-[state=active]:bg-success data-[state=active]:text-success-foreground">
             <Filter className="w-4 h-4 mr-2" />
             Non-IID Solution
@@ -61,12 +61,12 @@ const OurSolution = () => {
             <div className="space-y-8">
               {/* Step 1: Data Analysis */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center border-2 border-success">
                       <span className="font-bold text-success">1</span>
                     </div>
-                    <div className="w-0.5 h-full bg-success/30 mt-2" />
+                    <div className="w-0.5 h-full bg-success/30 mt-2 hidden md:block" />
                   </div>
                   <div className="flex-1 pb-8">
                     <h4 className="font-semibold mb-3">Data Distribution Analysis</h4>
@@ -173,12 +173,12 @@ const OurSolution = () => {
 
               {/* Step 2: Weighted Aggregation */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center border-2 border-success">
                       <span className="font-bold text-success">2</span>
                     </div>
-                    <div className="w-0.5 h-full bg-success/30 mt-2" />
+                    <div className="w-0.5 h-full bg-success/30 mt-2 hidden md:block" />
                   </div>
                   <div className="flex-1 pb-8">
                     <h4 className="font-semibold mb-3">Intelligent Weight Assignment</h4>
@@ -195,15 +195,15 @@ const OurSolution = () => {
 
               {/* Step 3: Results */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center border-2 border-success">
                       <CheckCircle className="w-6 h-6 text-success" />
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-3">Improved Accuracy</h4>
-                    <div className="grid grid-cols-2 gap-4">
+                  <div className="flex-1 w-full">
+                    <h4 className="font-semibold mb-3 text-center md:text-left">Improved Accuracy</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="p-6 rounded-xl bg-destructive/10 border border-destructive/30 text-center">
                         <p className="text-sm text-muted-foreground mb-2">Before</p>
                         <div className="text-4xl font-bold text-destructive mb-2">66.06%</div>
@@ -223,7 +223,6 @@ const OurSolution = () => {
         </TabsContent>
 
         {/* Security Solution */}
-{/* Security Solution */}
         <TabsContent value="security" className="mt-8 space-y-8">
           <Card className="p-8 bg-card/50 backdrop-blur border-primary/20">
             <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
@@ -236,7 +235,7 @@ const OurSolution = () => {
               <p className="text-sm text-muted-foreground mb-4">
                 Our protocol defends against <span className="font-semibold text-foreground">Eavesdroppers</span> (stealing data) and <span className="font-semibold text-foreground">Active Attackers</span> (tampering with models) using post-quantum secure cryptography.
               </p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30">
                   <div className="text-2xl mb-2">👀</div>
                   <h5 className="font-semibold text-sm mb-1">Threat 1: Eavesdropper</h5>
@@ -253,20 +252,20 @@ const OurSolution = () => {
             <div className="space-y-8">
               {/* Step 1: Key Exchange */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary">
                       <span className="font-bold text-primary">1</span>
                     </div>
-                    <div className="w-0.5 h-full bg-primary/30 mt-2" />
+                    <div className="w-0.5 h-full bg-primary/30 mt-2 hidden md:block" />
                   </div>
-                  <div className="flex-1 pb-8">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <div className="flex-1 pb-8 w-full">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2 justify-center md:justify-start">
                       <span className="text-2xl">🔑</span>
                       Secure Key Exchange (Post-Quantum)
                     </h4>
                     <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/30 min-h-[280px]">
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
                         <div className="text-center w-32">
                           <div className="text-3xl mb-2">📱</div>
                           <p className="text-xs font-medium mb-2">Client</p>
@@ -275,10 +274,10 @@ const OurSolution = () => {
                           </div>
                         </div>
                         
-                        <div className="flex-1 px-4 max-w-md">
+                        <div className="flex-1 px-4 max-w-md w-full">
                           <div className="relative h-8">
                             <div className="h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 absolute top-4 w-full" />
-                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-xs text-blue-500 whitespace-nowrap">
+                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 text-xs text-blue-500 whitespace-nowrap bg-background px-2">
                               ← → ← →
                             </div>
                           </div>
@@ -310,20 +309,20 @@ const OurSolution = () => {
 
               {/* Step 2: Authentication */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary">
                       <span className="font-bold text-primary">2</span>
                     </div>
-                    <div className="w-0.5 h-full bg-primary/30 mt-2" />
+                    <div className="w-0.5 h-full bg-primary/30 mt-2 hidden md:block" />
                   </div>
-                  <div className="flex-1 pb-8">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <div className="flex-1 pb-8 w-full">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2 justify-center md:justify-start">
                       <span className="text-2xl">✍️</span>
                       Digital Signature (Lightweight & Secure)
                     </h4>
                     <div className="p-6 rounded-xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/30 min-h-[280px]">
-                      <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div className="text-center p-4 rounded-lg bg-card/50 border border-purple-500/20">
                           <div className="text-3xl mb-2">📝</div>
                           <p className="text-xs font-medium mb-1">1. Sign Update</p>
@@ -342,13 +341,13 @@ const OurSolution = () => {
                       </div>
                       
                       <div className="p-4 rounded-lg bg-card/50 border border-purple-500/30">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                           <div className="text-center flex-1">
                             <div className="text-2xl mb-1">📱</div>
                             <p className="text-xs text-muted-foreground">Real Client</p>
                             <div className="mt-2 px-3 py-1 rounded bg-success/20 text-xs text-success">✓ Valid</div>
                           </div>
-                          <div className="w-px h-12 bg-border mx-4" />
+                          <div className="w-full h-px sm:w-px sm:h-12 bg-border mx-4" />
                           <div className="text-center flex-1">
                             <div className="text-2xl mb-1">🎭</div>
                             <p className="text-xs text-muted-foreground">Fake Attacker</p>
@@ -367,15 +366,15 @@ const OurSolution = () => {
 
               {/* Step 3: Encryption */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border-2 border-primary">
                       <span className="font-bold text-primary">3</span>
                     </div>
-                    <div className="w-0.5 h-full bg-primary/30 mt-2" />
+                    <div className="w-0.5 h-full bg-primary/30 mt-2 hidden md:block" />
                   </div>
-                  <div className="flex-1 pb-8">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <div className="flex-1 pb-8 w-full">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2 justify-center md:justify-start">
                       <span className="text-2xl">🔐</span>
                       Model Encryption (Fast & Lightweight)
                     </h4>
@@ -443,24 +442,24 @@ const OurSolution = () => {
 
               {/* Step 4: Secure Communication */}
               <div className="relative">
-                <div className="flex items-start gap-6">
-                  <div className="flex flex-col items-center">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex flex-col items-center mx-auto md:mx-0">
                     <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center border-2 border-success">
                       <CheckCircle className="w-6 h-6 text-success" />
                     </div>
                   </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-3 flex items-center gap-2">
+                  <div className="flex-1 w-full">
+                    <h4 className="font-semibold mb-3 flex items-center gap-2 justify-center md:justify-start">
                       <span className="text-2xl">🛡️</span>
                       Complete Protection in Action
                     </h4>
                     <div className="p-6 rounded-xl bg-gradient-to-br from-success/10 to-transparent border border-success/30">
                       <div className="max-w-5xl mx-auto">
                         {/* Simple 3-Step Flow */}
-                        <div className="flex items-center justify-between gap-8">
+                        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                           
                           {/* STEP 1: CLIENT */}
-                          <div className="flex-1">
+                          <div className="flex-1 w-full">
                             <div className="text-center mb-4">
                               <div className="w-20 h-20 rounded-full bg-blue-500/20 border-4 border-blue-500 flex items-center justify-center mx-auto mb-2">
                                 <span className="text-4xl">📱</span>

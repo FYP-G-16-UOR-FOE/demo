@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
-import FederatedLearningBasics from "@/components/demo/FederatedLearningBasics";
-import TraditionalIssues from "@/components/demo/TraditionalIssues";
-import OurSolution from "@/components/demo/OurSolution";
-import Methodology from "@/components/demo/Methodology";
 import ExperimentalResults from "@/components/demo/ExperimentalResults";
-import { Brain, Shield, Zap, Workflow, BarChart3 } from "lucide-react";
+import FederatedLearningBasics from "@/components/demo/FederatedLearningBasics";
+import Methodology from "@/components/demo/Methodology";
+import OurSolution from "@/components/demo/OurSolution";
+import TraditionalIssues from "@/components/demo/TraditionalIssues";
+import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BarChart3, Brain, Shield, Workflow, Zap } from "lucide-react";
+import { useState } from "react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("basics");
@@ -14,7 +14,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-accent to-background">
       {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 px-6">
+      <section className="relative overflow-hidden py-20">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwYThmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAtMy4zMTQgMi42ODYtNiA2LTZzNi0yLjY4NiA2LTYgMi42ODYtNiA2LTYgNi0yLjY4NiA2LTYgMi42ODYtNiA2LTYgNi0yLjY4NiA2LTYgMi42ODYtNiA2LTYgNi0yLjY4NiA2LTYgMi42ODYtNiA2LTYgNi0yLjY4NiA2LTYgMi42ODYtNiA2LTZ2MSIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
         
         <div className="container mx-auto max-w-7xl relative z-10">
@@ -24,11 +24,11 @@ const Index = () => {
               <span className="text-sm font-medium text-primary">Research Demonstration</span>
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-slide-in-right">
+            <h1 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent animate-slide-in-right">
               Federated Learning
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-left">
+            <p className="text-lg md:text-2xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-left">
               Addressing Non-IID Data, Security & Performance Challenges
             </p>
           </div>
@@ -63,10 +63,10 @@ const Index = () => {
       </section>
 
       {/* Main Demo Content */}
-      <section className="py-12 px-6">
+      <section className="py-12">
         <div className="container mx-auto max-w-7xl">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-5 h-14 mb-12 bg-card/50 backdrop-blur p-1 rounded-2xl">
+            <TabsList className="grid w-full max-w-6xl mx-auto grid-cols-1 md:grid-cols-5 h-auto md:h-14 mb-12 bg-card/50 backdrop-blur p-1 rounded-2xl gap-2 md:gap-0">
               <TabsTrigger 
                 value="basics" 
                 className="rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300"

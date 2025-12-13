@@ -1,10 +1,10 @@
 
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Server, Smartphone, Brain, ArrowUp, ArrowDown, Image, FileText, BarChart3, Play, Pause, RotateCcw } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowDown, ArrowUp, BarChart3, Brain, FileText, Image, Pause, Play, RotateCcw, Server, Smartphone } from "lucide-react";
+import { useEffect, useState } from "react";
 import TraditionalMLDiagram from "./TraditionalMLDiagram.tsx";
 
 const FederatedLearningBasics = () => {
@@ -114,20 +114,30 @@ const FederatedLearningBasics = () => {
 
         {/* Comparison Tabs */}
         <Tabs defaultValue="federated" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-6">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-1 md:grid-cols-2 mb-6 h-auto">
             <TabsTrigger value="federated">Federated Learning</TabsTrigger>
             <TabsTrigger value="traditional">Traditional ML</TabsTrigger>
           </TabsList>
           
           <TabsContent value="federated" className="space-y-8">
+            {/* Gboard Simulation */}
+            <Card className="w-full overflow-hidden bg-white/95 backdrop-blur border-primary/20">
+              <div className="aspect-[16/9] w-full min-h-[800px] relative">
+                <iframe 
+                  src="/demo/fl_basics/index.html" 
+                  className="absolute inset-0 w-full h-full border-0"
+                  title="Federated Learning Gboard Simulation"
+                />
+              </div>
+            </Card>
             {/* Controls */}
-            <Card className="p-6 bg-card/50 backdrop-blur">
-              <div className="flex items-center justify-center gap-4">
+            <Card className="p-6 bg-card/50 backdrop-blur ">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button
                   onClick={() => setIsPlaying(!isPlaying)}
                   variant="outline"
                   size="lg"
-                  className="gap-2"
+                  className="gap-2 w-full sm:w-auto"
                 >
                   {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                   {isPlaying ? "Pause" : "Play"}
@@ -136,7 +146,7 @@ const FederatedLearningBasics = () => {
                   onClick={handleReset}
                   variant="outline"
                   size="lg"
-                  className="gap-2"
+                  className="gap-2 w-full sm:w-auto"
                 >
                   <RotateCcw className="w-5 h-5" />
                   Reset

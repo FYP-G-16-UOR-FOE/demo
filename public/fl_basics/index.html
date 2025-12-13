@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gboard Federated Learning</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+        :root {
+            --bg-color: #f0f2f5;
+            --google-blue: #4285f4;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc04;
+            --google-green: #34a853;
+            --keyboard-bg: #f1f3f4;
+            --key-bg: #ffffff;
+            --key-shadow: #dadce0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 { color: #202124; margin-bottom: 5px; }
+        p { color: #5f6368; margin-bottom: 20px; }
+
+        #diagram-container {
+            position: relative;
+            width: 1300px; /* Increased width for more spacing */
+            height: 700px;
+        }
+
+        /* Server */
+        #server {
+            position: absolute;
+            top: 10px; /* Moved up slightly */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px; /* Increased width */
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .cloud-container {
+            position: relative;
+            width: 320px; /* Big Cloud */
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cloud-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            /* SVG has built-in shadow */
+        }
+        
+        .server-content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .server-brain-img {
+            position: absolute;
+            top: 25%; /* Moved up significantly */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            mix-blend-mode: multiply; /* Ensures white background is transparent */
+        }
+
+        .model-label {
+            position: absolute;
+            top: 50%; /* Adjusted spacing */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px; /* Slightly larger */
+            font-weight: bold;
+            color: var(--google-blue);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 8px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+
+        .server-label {
+            position: absolute;
+            bottom: 45px; /* Moved up */
+            background: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: 500;
+            color: #5f6368;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .server-label img { width: 18px; height: 18px; }
+
+        /* Client Wrapper (Positions the whole unit) */
+        .client-wrapper {
+            position: absolute;
+            bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 180px;
+        }
+
+        /* Phone Visuals */
+        .client-phone {
+            position: relative;
+            width: 180px;
+            height: 320px;
+            background: #fff;
+            border: 8px solid #333;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Keeps content inside rounded corners */
+            box-sizing: content-box;
+            z-index: 5;
+        }
+
+        /* Phone Header */
+        .phone-header {
+            height: 20px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #e0e0e0;
+            flex-shrink: 0;
+        }
+        .camera-hole { width: 6px; height: 6px; background: #333; border-radius: 50%; }
+
+        /* Chat Area */
+        .chat-screen {
+            flex-grow: 1;
+            background: #fff;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-end;
+            overflow: hidden;
+        }
+
+        .bubble {
+            background: var(--google-blue);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 12px 12px 0 12px;
+            font-size: 11px;
+            margin-top: 5px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+        }
+        .bubble.visible { opacity: 1; transform: translateY(0); }
+
+        /* Gboard UI */
+        .gboard-container {
+            background: var(--keyboard-bg);
+            padding: 5px;
+            border-top: 1px solid #dadce0;
+            flex-shrink: 0;
+        }
+
+        .suggestions-strip {
+            display: flex;
+            justify-content: space-around;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .g-logo {
+            width: 16px;
+            height: 16px;
+            background: conic-gradient(from -45deg, #ea4335 0deg 90deg, #34a853 90deg 180deg, #fbbc04 180deg 270deg, #4285f4 270deg 360deg);
+            border-radius: 50%;
+        }
+        .sugg-word { font-size: 10px; color: #5f6368; }
+
+        .keyboard-row {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-bottom: 3px;
+        }
+
+        .key {
+            background: var(--key-bg);
+            border-radius: 4px;
+            box-shadow: 0 1px 0 var(--key-shadow);
+            height: 20px;
+            width: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #3c4043;
+        }
+        
+        .key.space { width: 80px; }
+        .key.enter { background: var(--google-blue); color: white; width: 24px; }
+        .key.active { background: #d2e3fc; }
+
+        /* User Info Tag */
+        .user-tag {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* Local Model Node */
+        .local-model {
+            margin-top: 15px; /* Space below phone */
+            width: 140px; /* Increased width for icon */
+            height: 40px;
+            background: #fff;
+            border: 2px solid var(--google-green);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Space between icon and text */
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--google-green);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 5;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .local-model img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        .local-model::before {
+            content: '▼';
+            position: absolute;
+            top: -14px;
+            color: #bdc1c6;
+            font-size: 10px;
+        }
+        .local-model.training {
+            background: var(--google-green);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(30, 142, 62, 0.4);
+        }
+
+        /* Connections */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        path {
+            fill: none;
+            stroke: #bdc1c6;
+            stroke-width: 2;
+            stroke-dasharray: 6;
+        }
+
+        /* Server Animation States */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2); filter: brightness(1.2); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes spinGlow {
+            0% { transform: translate(-50%, -50%) rotate(0deg); box-shadow: 0 0 10px rgba(66, 133, 244, 0.5); }
+            50% { transform: translate(-50%, -50%) rotate(180deg); box-shadow: 0 0 30px rgba(52, 168, 83, 0.8); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); box-shadow: 0 0 10px rgba(66, 133, 244, 0.5); }
+        }
+
+        .server-brain-img.pulse {
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        .server-brain-img.aggregating {
+            animation: spinGlow 2s ease-in-out infinite;
+            border-radius: 50%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 1px solid #dadce0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50; /* High z-index to show over phone */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .particle img { width: 20px; height: 20px; }
+
+        /* Highlight for active suggestion */
+        .sugg-word.active {
+            background: #e8f0fe;
+            color: var(--google-blue);
+            font-weight: bold;
+            border-radius: 4px;
+            padding: 2px 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transform: scale(1.1);
+            transition: all 0.2s;
+        }
+
+        /* Status */
+        #process-indicator {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border-left: 5px solid #ccc;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="process-indicator">Step 0: Ready</div>
+    <!-- Status bar removed -->
+
+    <div id="diagram-container">
+        <svg id="connections"></svg>
+
+        <div id="server">
+            <div class="cloud-container">
+                <!-- Cloud removed -->
+                
+                <div class="server-content">
+                    <img src="brain_icon_hq.png" class="server-brain-img" alt="Global Model">
+                    <div class="model-label">Global Model</div>
+                    
+                    <div class="server-label">
+                        <img src="google_g_logo.png" alt="G">
+                        <span>Google Server</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clients injected here -->
+    </div>
+
+    <script>
+        const container = document.getElementById('diagram-container');
+        const svg = document.getElementById('connections');
+        // statusBar removed
+        const processIndicator = document.getElementById('process-indicator');
+
+        const numClients = 5;
+        const clients = [];
+        // Updated Personas for Prediction Flow
+        const personas = [
+            { name: "Sports Fan", icon: "⚽", partial: "Did you see the", target: "goal", sugg: ["goal", "score", "team"] },
+            { name: "Foodie", icon: "🍔", partial: "I want a", target: "burger", sugg: ["burger", "fries", "eat"] },
+            { name: "Traveler", icon: "✈️", partial: "Flight is at", target: "5", sugg: ["5", "hotel", "trip"] },
+            { name: "Gamer", icon: "🎮", partial: "Good", target: "game!", sugg: ["game!", "play", "win"] },
+            { name: "Artist", icon: "🎨", partial: "Love this", target: "color", sugg: ["color", "paint", "draw"] }
+        ];
+
+        // QWERTY Layout for visual
+        const row1 = "qwertyuiop".split('');
+        const row2 = "asdfghjkl".split('');
+        const row3 = "zxcvbnm".split('');
+
+        function createKeyboard(suggestions, id) {
+            let html = '<div class="gboard-container">';
+            
+            // Suggestions
+            html += `
+                <div class="suggestions-strip" id="sugg-strip-${id}">
+                    <div class="g-logo"></div>
+                    <div class="sugg-word" id="sugg-${id}-0">${suggestions[0]}</div>
+                    <div class="sugg-word" id="sugg-${id}-1">${suggestions[1]}</div>
+                    <div class="sugg-word" id="sugg-${id}-2">${suggestions[2]}</div>
+                </div>
+            `;
+
+            // Keys
+            html += '<div class="keyboard-row">';
+            row1.forEach(k => html += `<div class="key" id="key-${k}">${k}</div>`);
+            html += '</div><div class="keyboard-row">';
+            row2.forEach(k => html += `<div class="key" id="key-${k}">${k}</div>`);
+            html += '</div><div class="keyboard-row">';
+            html += '<div class="key">⇧</div>';
+            row3.forEach(k => html += `<div class="key" id="key-${k}">${k}</div>`);
+            html += '<div class="key">⌫</div>';
+            html += '</div><div class="keyboard-row">';
+            html += '<div class="key">?123</div><div class="key">,</div><div class="key space"></div><div class="key">.</div><div class="key enter">↵</div>';
+            html += '</div></div>';
+            return html;
+        }
+
+        function init() {
+            const width = container.clientWidth;
+            const spacing = width / (numClients + 1);
+
+            for (let i = 0; i < numClients; i++) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'client-wrapper';
+                wrapper.style.left = (spacing * (i + 1)) - 90 + 'px';
+
+                wrapper.innerHTML = `
+                    <div class="user-tag">${personas[i].icon} ${personas[i].name}</div>
+                    <div class="client-phone">
+                        <div class="phone-header"><div class="camera-hole"></div></div>
+                        <div class="chat-screen" id="chat-${i}"></div>
+                ${createKeyboard(personas[i].sugg, i)}
+            </div>
+            <div class="local-model" id="local-${i}">
+                <img src="brain_icon.png" alt="Brain">
+                <span>Local Model</span>
+            </div>
+        `;        
+                container.appendChild(wrapper);
+                clients.push(wrapper);
+                
+                // Connect Server to Phone (top of wrapper)
+                drawConnection(document.getElementById('server'), wrapper, i);
+            }
+
+            startLoop();
+        }
+
+        function drawConnection(server, wrapper, i) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('id', `path-${i}`);
+            
+            // Target the server label specifically
+            const serverLabel = server.querySelector('.server-label');
+            const sRect = serverLabel.getBoundingClientRect();
+            const wRect = wrapper.getBoundingClientRect();
+            const dRect = container.getBoundingClientRect();
+
+            const sx = sRect.left - dRect.left + sRect.width/2;
+            const sy = sRect.bottom - dRect.top; // Start exactly from bottom of label
+            
+            // Connect to top of phone (which is inside wrapper)
+            const cx = wRect.left - dRect.left + wRect.width/2;
+            const cy = wRect.top - dRect.top;
+
+            const d = `M ${sx} ${sy} C ${sx} ${sy+50}, ${cx} ${cy-50}, ${cx} ${cy}`;
+            path.setAttribute('d', d);
+            svg.appendChild(path);
+        }
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function updateProcess(step, text, color) {
+            processIndicator.textContent = `Step ${step}: ${text}`;
+            processIndicator.style.borderLeftColor = color;
+            // Status bar removed
+        }
+
+        async function startLoop() {
+            while(true) {
+                // 1. Broadcast
+                updateProcess(1, "Broadcasting Global Model", "#4285f4");
+                await Promise.all(clients.map((_, i) => animateParticle(i, 'down', 'brain_icon.png')));
+                await wait(1000);
+
+                // 2. Typing Partial Phrase
+                updateProcess(2, "User Typing...", "#34a853");
+                
+                clients.forEach((wrapper, i) => {
+                    const msg = personas[i].partial;
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.textContent = msg + "..."; // Show partial
+                    document.getElementById(`chat-${i}`).appendChild(bubble);
+                    setTimeout(() => bubble.classList.add('visible'), 50);
+
+                    // Key press effect
+                    const keys = wrapper.querySelectorAll('.key');
+                    for(let k=0; k<3; k++) {
+                        setTimeout(() => {
+                            const randKey = keys[Math.floor(Math.random() * 26)];
+                            if(randKey) randKey.classList.add('active');
+                            setTimeout(() => randKey?.classList.remove('active'), 300);
+                        }, k * 400);
+                    }
+                });
+                await wait(2500);
+
+                // 3. Prediction & Selection
+                updateProcess(3, "Model Predicts Next Word", "#fbbc04");
+                
+                // Highlight suggestion
+                clients.forEach((_, i) => {
+                    const targetWord = personas[i].target;
+                    const suggs = personas[i].sugg;
+                    const targetIndex = suggs.indexOf(targetWord);
+                    if(targetIndex !== -1) {
+                        const suggEl = document.getElementById(`sugg-${i}-${targetIndex}`);
+                        suggEl.classList.add('active');
+                    }
+                });
+                await wait(1500);
+
+                updateProcess(3, "User Selects Prediction", "#fbbc04");
+                // Simulate click and complete sentence
+                clients.forEach((_, i) => {
+                    const bubble = document.querySelector(`#chat-${i} .bubble`);
+                    bubble.textContent = personas[i].partial + " " + personas[i].target;
+                    
+                    // Remove highlight
+                    const targetWord = personas[i].target;
+                    const suggs = personas[i].sugg;
+                    const targetIndex = suggs.indexOf(targetWord);
+                    if(targetIndex !== -1) {
+                        const suggEl = document.getElementById(`sugg-${i}-${targetIndex}`);
+                        setTimeout(() => suggEl.classList.remove('active'), 500);
+                    }
+                });
+                await wait(1500);
+
+                // 4. Local Training (Data -> Local Model)
+                updateProcess(4, "Training on User Selection", "#1e8e3e");
+                
+                await Promise.all(clients.map((wrapper, i) => {
+                    return new Promise(resolve => {
+                        const bubble = wrapper.querySelector('.bubble');
+                        const localModel = document.getElementById(`local-${i}`);
+                        
+                        const p = document.createElement('div');
+                        p.className = 'particle';
+                        p.textContent = '📝';
+                        p.style.width = '20px'; p.style.height = '20px'; p.style.fontSize = '10px';
+                        container.appendChild(p);
+
+                        const bRect = bubble.getBoundingClientRect();
+                        const lRect = localModel.getBoundingClientRect();
+                        const cRect = container.getBoundingClientRect();
+
+                        const startX = bRect.left - cRect.left + bRect.width/2;
+                        const startY = bRect.top - cRect.top + bRect.height/2;
+                        const endX = lRect.left - cRect.left + lRect.width/2;
+                        const endY = lRect.top - cRect.top + lRect.height/2;
+
+                        p.style.left = startX + 'px';
+                        p.style.top = startY + 'px';
+
+                        const anim = p.animate([
+                            { left: startX + 'px', top: startY + 'px' },
+                            { left: endX + 'px', top: endY + 'px' }
+                        ], { duration: 2000, easing: 'ease-in-out' });
+
+                        anim.onfinish = () => {
+                            p.remove();
+                            localModel.classList.add('training');
+                            localModel.querySelector('span').textContent = "Training...";
+                            resolve();
+                        };
+                    });
+                }));
+                
+                await wait(3000); 
+                
+                clients.forEach((_, i) => {
+                    const lm = document.getElementById(`local-${i}`);
+                    lm.classList.remove('training');
+                    lm.querySelector('span').textContent = "Model Ready";
+                });
+
+                // 5. Upload
+                updateProcess(5, "Uploading Trained Model", "#fbbc04");
+                await Promise.all(clients.map((_, i) => animateUpload(i)));
+                await wait(1000);
+
+                // Clear
+                clients.forEach((_, i) => {
+                    document.getElementById(`chat-${i}`).innerHTML = '';
+                    document.getElementById(`local-${i}`).querySelector('span').textContent = "Local Model";
+                });
+
+                // 6. Aggregation
+                updateProcess(6, "Aggregating Global Model", "#ea4335");
+                const serverImg = document.querySelector('.server-brain-img');
+                const modelLabel = document.querySelector('.model-label'); // Target inner label
+                
+                // Start aggregation animation
+                serverImg.classList.add('aggregating');
+                modelLabel.textContent = "Updating...";
+                
+                await wait(2000);
+                
+                // Finish aggregation
+                serverImg.classList.remove('aggregating');
+                modelLabel.textContent = "Global Model v2"; // Simulate version update
+                
+                await wait(1000);
+                modelLabel.textContent = "Global Model"; // Reset for loop
+            }
+        }
+
+        function animateParticle(i, dir, content) {
+            return new Promise(resolve => {
+                const path = document.getElementById(`path-${i}`);
+                const len = path.getTotalLength();
+                const p = document.createElement('div');
+                p.className = 'particle';
+                
+                if (content.endsWith('.png')) {
+                    const img = document.createElement('img');
+                    img.src = content;
+                    img.style.width = '20px';
+                    img.style.height = '20px';
+                    img.style.borderRadius = '50%'; // Make it round for white background
+                    p.appendChild(img);
+                } else {
+                    p.textContent = content;
+                }
+                
+                container.appendChild(p);
+
+                const duration = 3000; // Slower particle
+                const start = performance.now();
+
+                function step(time) {
+                    const elapsed = time - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const t = progress < .5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+                    
+                    const dist = dir === 'down' ? len * t : len * (1-t);
+                    const point = path.getPointAtLength(dist);
+
+                    p.style.left = (point.x - 15) + 'px';
+                    p.style.top = (point.y - 15) + 'px';
+
+                    if(progress < 1) requestAnimationFrame(step);
+                    else {
+                        p.remove();
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        function animateUpload(i) {
+            return new Promise(resolve => {
+                const localModel = document.getElementById(`local-${i}`);
+                const serverImg = document.querySelector('.server-brain-img'); // Target the icon directly
+                
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = '⚙️';
+                container.appendChild(p);
+
+                const lRect = localModel.getBoundingClientRect();
+                const sRect = serverImg.getBoundingClientRect(); // Get icon rect
+                const cRect = container.getBoundingClientRect();
+
+                const startX = lRect.left - cRect.left + lRect.width/2;
+                const startY = lRect.top - cRect.top;
+                
+                // Target center of the icon
+                const endX = sRect.left - cRect.left + sRect.width/2;
+                const endY = sRect.top - cRect.top + sRect.height/2;
+
+                const anim = p.animate([
+                    { left: startX + 'px', top: startY + 'px', transform: 'scale(1)' },
+                    { left: endX + 'px', top: endY + 'px', transform: 'scale(0.5)' } // Scale down to disappear
+                ], { duration: 3000, easing: 'ease-in-out' });
+
+                anim.onfinish = () => {
+                    p.remove();
+                    // Trigger pulse on server icon
+                    serverImg.classList.add('pulse');
+                    setTimeout(() => serverImg.classList.remove('pulse'), 300);
+                    resolve();
+                };
+            });
+        }
+
+        setTimeout(init, 100);
+    </script>
+</body>
+</html>

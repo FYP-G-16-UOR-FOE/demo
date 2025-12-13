@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Server, Smartphone, Database, AlertTriangle, Upload, Brain, Play, Pause, RotateCcw } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { AlertTriangle, Brain, Database, Pause, Play, RotateCcw, Server, Smartphone, Upload } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const TraditionalMLDiagram = () => {
   const [currentPhase, setCurrentPhase] = useState(0);
@@ -73,12 +73,12 @@ const TraditionalMLDiagram = () => {
 
       {/* Controls */}
       <Card className="p-6 bg-card/50 backdrop-blur">
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             onClick={() => setIsPlaying(!isPlaying)}
             variant="outline"
             size="lg"
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto"
           >
             {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             {isPlaying ? "Pause" : "Play"}
@@ -87,7 +87,7 @@ const TraditionalMLDiagram = () => {
             onClick={handleReset}
             variant="outline"
             size="lg"
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto"
           >
             <RotateCcw className="w-5 h-5" />
             Reset

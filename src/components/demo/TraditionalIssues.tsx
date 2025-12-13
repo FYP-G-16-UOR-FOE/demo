@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { AlertTriangle, TrendingDown, Shield, Gauge, Lock, Zap, HardDrive, Clock, Server, Smartphone, ArrowLeftRight, Wifi } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AlertTriangle, ArrowLeftRight, Clock, Gauge, HardDrive, Lock, Server, Shield, Smartphone, TrendingDown, Wifi, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import SecurityAnimation from "./SecurityAnimation";
 
 const CommunicationOverheadAnimation = () => {
@@ -385,7 +385,7 @@ const TraditionalIssues = () => {
 
       {/* Issue Categories */}
       <Tabs defaultValue="non-iid" className="w-full">
-        <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-3 h-auto bg-card/50 backdrop-blur p-2 rounded-2xl">
+        <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-1 md:grid-cols-3 h-auto bg-card/50 backdrop-blur p-2 rounded-2xl gap-2 md:gap-0">
           <TabsTrigger value="non-iid" className="rounded-xl py-3 data-[state=active]:bg-destructive data-[state=active]:text-destructive-foreground">
             <TrendingDown className="w-4 h-4 mr-2" />
             Non-IID Data
@@ -596,7 +596,7 @@ const TraditionalIssues = () => {
 
         {/* Security Issues - Now with Animation */}
         <TabsContent value="security" className="mt-8 space-y-8">
-          <Card className="p-8 bg-card/50 backdrop-blur border-primary/20">
+          <Card className="py-8 px-3 md:px-8 bg-card/50 backdrop-blur border-primary/20">
             <h3 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <Shield className="w-7 h-7 text-primary" />
               Security Vulnerabilities - Interactive Story

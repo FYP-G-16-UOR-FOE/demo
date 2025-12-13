@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federated Learning: The Story</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --bg-color: #f8f9fa;
+            --server-bg: #e3f2fd;
+            --server-border: #2196f3;
+            --client-bg: #ffffff;
+            --client-border: #cfd8dc;
+            --text-main: #37474f;
+            --accent-success: #4caf50;
+            --accent-warn: #ff9800;
+            --accent-lock: #f44336;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Header & Controls */
+        header {
+            margin-top: 20px;
+            text-align: center;
+            z-index: 100;
+        }
+
+        h1 { margin: 0; font-size: 24px; color: #263238; }
+        p { margin: 5px 0 20px; color: #546e7a; }
+
+        #story-box {
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-size: 16px;
+            font-weight: 500;
+            color: #2196f3;
+            min-width: 400px;
+            text-align: center;
+            border: 2px solid #e3f2fd;
+            transition: all 0.3s ease;
+        }
+
+        /* Diagram Area */
+        #diagram {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            margin-top: 20px;
+        }
+
+        /* Server Node */
+        #server {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 160px;
+            background: var(--server-bg);
+            border: 3px solid var(--server-border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.15);
+            z-index: 10;
+        }
+
+        .server-icon { width: 50px; height: 50px; fill: #1976d2; margin-bottom: 10px; }
+        
+        .model-display {
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #bbdefb;
+            font-family: monospace;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        /* Client Nodes */
+        .client {
+            position: absolute;
+            bottom: 20px;
+            width: 180px;
+            height: 240px;
+            background: var(--client-bg);
+            border: 2px solid var(--client-border);
+            border-radius: 12px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .client-header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .user-icon { width: 24px; height: 24px; fill: #78909c; margin-right: 8px; }
+        .client-name { font-size: 12px; font-weight: 700; color: #546e7a; }
+
+        .process-area {
+            flex-grow: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .input-bubble {
+            background: #f5f5f5;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            color: #333;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s;
+        }
+
+        .arrow-down { 
+            font-size: 18px; 
+            color: #cfd8dc; 
+            opacity: 0; 
+            transition: opacity 0.5s;
+        }
+
+        .math-box {
+            background: #e8f5e9;
+            border: 1px solid #a5d6a7;
+            color: #2e7d32;
+            padding: 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 10px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s;
+        }
+
+        /* Animations */
+        .visible { opacity: 1 !important; transform: translateY(0) scale(1) !important; }
+
+        /* Particles & Connections */
+        svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        path {
+            fill: none;
+            stroke: #cfd8dc;
+            stroke-width: 2;
+            stroke-dasharray: 5;
+        }
+
+        .particle {
+            position: absolute;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Federated Learning: The Story</h1>
+        <p>Watch how the server learns without seeing your data.</p>
+        <div id="story-box">Initializing...</div>
+    </header>
+
+    <div id="diagram">
+        <svg id="connections"></svg>
+
+        <div id="server">
+            <!-- Server Icon SVG -->
+            <svg class="server-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+            </svg>
+            <div style="font-weight:bold; margin-bottom:5px;">Global Model</div>
+            <div class="model-display" id="server-screen">I like to play [ ??? ]</div>
+        </div>
+
+        <!-- Clients will be injected here -->
+    </div>
+
+    <script>
+        const diagram = document.getElementById('diagram');
+        const svg = document.getElementById('connections');
+        const storyBox = document.getElementById('story-box');
+        const serverScreen = document.getElementById('server-screen');
+
+        const clients = [
+            { name: "Alice", input: "Soccer", math: "[0.9, 0.1]" },
+            { name: "Bob", input: "Guitar", math: "[0.1, 0.8]" },
+            { name: "Charlie", input: "Soccer", math: "[0.9, 0.1]" },
+            { name: "Dave", input: "Chess", math: "[0.2, 0.3]" },
+            { name: "Eve", input: "Guitar", math: "[0.1, 0.8]" }
+        ];
+
+        const clientNodes = [];
+
+        function init() {
+            const width = diagram.clientWidth;
+            const spacing = width / (clients.length + 1);
+
+            clients.forEach((c, i) => {
+                const node = document.createElement('div');
+                node.className = 'client';
+                node.style.left = (spacing * (i + 1)) - 90 + 'px';
+
+                node.innerHTML = `
+                    <div class="client-header">
+                        <svg class="user-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <span class="client-name">${c.name}</span>
+                    </div>
+                    <div class="process-area">
+                        <div class="input-bubble" id="input-${i}">Type: "${c.input}"</div>
+                        <div class="arrow-down" id="arrow-${i}">↓</div>
+                        <div class="math-box" id="math-${i}">Math: ${c.math}</div>
+                    </div>
+                `;
+                
+                diagram.appendChild(node);
+                clientNodes.push(node);
+
+                // Draw static lines
+                drawConnection(document.getElementById('server'), node, i);
+            });
+
+            runStory();
+        }
+
+        function drawConnection(server, client, i) {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('id', `path-${i}`);
+            
+            const sRect = server.getBoundingClientRect();
+            const cRect = client.getBoundingClientRect();
+            const dRect = diagram.getBoundingClientRect();
+
+            const sx = sRect.left - dRect.left + sRect.width/2;
+            const sy = sRect.bottom - dRect.top;
+            const cx = cRect.left - dRect.left + cRect.width/2;
+            const cy = cRect.top - dRect.top;
+
+            // Simple curve
+            const d = `M ${sx} ${sy} C ${sx} ${sy+100}, ${cx} ${cy-100}, ${cx} ${cy}`;
+            path.setAttribute('d', d);
+            svg.appendChild(path);
+        }
+
+        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        async function runStory() {
+            while(true) {
+                // Step 1: Problem
+                storyBox.textContent = "1. Server doesn't know what people like to play.";
+                storyBox.style.borderColor = "#ff9800";
+                serverScreen.innerHTML = "I like to play [ ??? ]";
+                serverScreen.style.color = "#d32f2f";
+                await wait(4000);
+
+                // Step 2: Broadcast
+                storyBox.textContent = "2. Server sends a 'Blank Model' to everyone.";
+                storyBox.style.borderColor = "#2196f3";
+                await broadcast();
+                await wait(1000);
+
+                // Step 3: Local Training
+                storyBox.textContent = "3. Users type on their phones. Data stays LOCAL.";
+                storyBox.style.borderColor = "#4caf50";
+                
+                // Show inputs
+                clients.forEach((_, i) => {
+                    document.getElementById(`input-${i}`).classList.add('visible');
+                });
+                await wait(2000);
+
+                // Step 4: Conversion
+                storyBox.textContent = "4. Phones convert words into MATH (Numbers).";
+                clients.forEach((_, i) => {
+                    document.getElementById(`arrow-${i}`).classList.add('visible');
+                    setTimeout(() => {
+                        document.getElementById(`math-${i}`).classList.add('visible');
+                    }, 500);
+                });
+                await wait(4000);
+
+                // Step 5: Upload
+                storyBox.textContent = "5. Only the MATH is sent back. No words leave the phone!";
+                storyBox.style.borderColor = "#f44336"; // Lock color
+                await upload();
+                
+                // Hide local elements
+                clients.forEach((_, i) => {
+                    document.getElementById(`input-${i}`).classList.remove('visible');
+                    document.getElementById(`arrow-${i}`).classList.remove('visible');
+                    document.getElementById(`math-${i}`).classList.remove('visible');
+                });
+                await wait(1000);
+
+                // Step 6: Aggregation
+                storyBox.textContent = "6. Server combines the math to learn.";
+                storyBox.style.borderColor = "#9c27b0";
+                document.getElementById('server').style.transform = "translateX(-50%) scale(1.1)";
+                await wait(1500);
+                document.getElementById('server').style.transform = "translateX(-50%) scale(1)";
+
+                // Step 7: Result
+                storyBox.textContent = "7. Success! Server learned 'Soccer' & 'Guitar'.";
+                storyBox.style.borderColor = "#4caf50";
+                serverScreen.innerHTML = "I like to play [ Soccer/Guitar ]";
+                serverScreen.style.color = "#2e7d32";
+                await wait(5000);
+            }
+        }
+
+        function broadcast() {
+            const promises = clients.map((_, i) => animateParticle(i, 'down', '📦'));
+            return Promise.all(promises);
+        }
+
+        function upload() {
+            const promises = clients.map((_, i) => animateParticle(i, 'up', '🔒'));
+            return Promise.all(promises);
+        }
+
+        function animateParticle(i, dir, char) {
+            return new Promise(resolve => {
+                const path = document.getElementById(`path-${i}`);
+                const len = path.getTotalLength();
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.textContent = char;
+                diagram.appendChild(p);
+
+                const duration = 1500;
+                const start = performance.now();
+
+                function step(time) {
+                    const elapsed = time - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Ease
+                    const t = progress < .5 ? 2*progress*progress : -1+(4-2*progress)*progress;
+                    
+                    const dist = dir === 'down' ? len * t : len * (1-t);
+                    const point = path.getPointAtLength(dist);
+
+                    p.style.left = (point.x - 15) + 'px';
+                    p.style.top = (point.y - 15) + 'px';
+
+                    if(progress < 1) requestAnimationFrame(step);
+                    else {
+                        p.remove();
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        setTimeout(init, 100);
+    </script>
+</body>
+</html>

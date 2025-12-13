@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IID vs Non-IID: The Data Rain</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #202124;
+            --google-blue: #4285f4;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc04;
+            --google-green: #34a853;
+            --gray: #5f6368;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrollbars during rain */
+        }
+
+        /* Narrator Box */
+        .narrator-box {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 700px;
+            margin-bottom: 20px;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .narrator-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--google-blue);
+            margin-bottom: 10px;
+        }
+
+        .narrator-text {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: var(--gray);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .btn-iid { background: var(--google-green); color: white; }
+        .btn-non-iid { background: var(--google-red); color: white; }
+        .btn-reset { background: white; color: var(--gray); border: 1px solid #ddd; }
+
+        /* Stage */
+        .stage {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            /* border: 1px dashed #ccc; */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cloud */
+        .cloud-container {
+            position: relative;
+            width: 300px;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .cloud-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cloud-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: var(--google-blue);
+            font-size: 1.2rem;
+            background: rgba(255,255,255,0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* Clients */
+        .clients-row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            padding-bottom: 20px;
+            z-index: 50;
+        }
+
+        .client-bucket {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 140px;
+            position: relative;
+        }
+
+        .bucket-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        .bucket-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .bucket-container {
+            width: 100px;
+            height: 120px;
+            border: 4px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            background: rgba(255,255,255,0.5);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column-reverse; /* Stack from bottom */
+            align-items: center;
+            padding-bottom: 5px;
+        }
+
+        .bucket-stats {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--gray);
+            text-align: center;
+            min-height: 40px;
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 10;
+            transition: top 1s linear, left 1s linear;
+        }
+
+        .collected-item {
+            font-size: 1.2rem;
+            margin: -2px 0; /* Tight stacking */
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="narrator-box">
+        <div class="narrator-title" id="narrator-title">Welcome to the Data Rain!</div>
+        <div class="narrator-text" id="narrator-text">
+            In Federated Learning, we train models on user devices. But how is the data distributed? <br>
+            Click a button below to simulate the data flow.
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-iid" onclick="simulateIID()">Simulate IID (Balanced)</button>
+        <button class="btn-non-iid" onclick="simulateNonIID()">Simulate Non-IID (Realistic)</button>
+        <button class="btn-reset" onclick="reset()">Reset</button>
+    </div>
+
+    <div class="stage">
+        <div class="cloud-container" id="cloud">
+            <img src="google_cloud_bg.png" class="cloud-img" alt="Cloud">
+            <div class="cloud-label">World Data</div>
+        </div>
+
+        <div class="clients-row" id="clients-row">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+
+    <script>
+        const clients = [
+            { name: "Sports Fan", icon: "⚽", id: 0, pref: "⚽" },
+            { name: "Foodie", icon: "🍔", id: 1, pref: "🍔" },
+            { name: "Traveler", icon: "✈️", id: 2, pref: "✈️" },
+            { name: "Gamer", icon: "🎮", id: 3, pref: "🎮" },
+            { name: "Artist", icon: "🎨", id: 4, pref: "🎨" }
+        ];
+
+        const allIcons = ["⚽", "🍔", "✈️", "🎮", "🎨"];
+        let isAnimating = false;
+
+        // Init
+        const clientsRow = document.getElementById('clients-row');
+        clients.forEach(c => {
+            const div = document.createElement('div');
+            div.className = 'client-bucket';
+            div.innerHTML = `
+                <div class="bucket-icon">${c.icon}</div>
+                <div class="bucket-name">${c.name}</div>
+                <div class="bucket-container" id="bucket-${c.id}"></div>
+                <div class="bucket-stats" id="stats-${c.id}">0 items</div>
+            `;
+            clientsRow.appendChild(div);
+        });
+
+        const narratorTitle = document.getElementById('narrator-title');
+        const narratorText = document.getElementById('narrator-text');
+
+        function updateNarrator(title, text) {
+            narratorTitle.textContent = title;
+            narratorTitle.style.opacity = 0;
+            narratorText.style.opacity = 0;
+            
+            setTimeout(() => {
+                narratorTitle.textContent = title;
+                narratorText.innerHTML = text;
+                narratorTitle.style.opacity = 1;
+                narratorText.style.opacity = 1;
+            }, 300);
+        }
+
+        function reset() {
+            isAnimating = false;
+            // Clear buckets
+            document.querySelectorAll('.bucket-container').forEach(b => b.innerHTML = '');
+            document.querySelectorAll('.bucket-stats').forEach(s => s.textContent = '0 items');
+            // Remove flying particles
+            document.querySelectorAll('.particle').forEach(p => p.remove());
+            
+            updateNarrator("Welcome to the Data Rain!", "Click a button to start a simulation.");
+        }
+
+        async function spawnParticle(icon, targetClientId) {
+            const cloud = document.getElementById('cloud');
+            const targetBucket = document.getElementById(`bucket-${targetClientId}`);
+            
+            // Start position (Cloud center + random jitter)
+            const cloudRect = cloud.getBoundingClientRect();
+            const startX = cloudRect.left + cloudRect.width / 2 + (Math.random() * 60 - 30);
+            const startY = cloudRect.top + cloudRect.height / 2;
+
+            // Target position
+            const bucketRect = targetBucket.getBoundingClientRect();
+            const targetX = bucketRect.left + bucketRect.width / 2 - 10; // Center of bucket
+            const targetY = bucketRect.top + 10; // Top of bucket
+
+            // Create element
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.textContent = icon;
+            p.style.left = startX + 'px';
+            p.style.top = startY + 'px';
+            document.body.appendChild(p);
+
+            // Animate fall
+            // Use CSS transition for smooth movement
+            // Force reflow
+            p.offsetHeight; 
+            
+            p.style.left = targetX + 'px';
+            p.style.top = targetY + 'px';
+
+            // Wait for animation
+            await new Promise(r => setTimeout(r, 1000));
+
+            // Remove particle and add to bucket
+            p.remove();
+            
+            if (!isAnimating) return; // Stop if reset
+
+            const item = document.createElement('div');
+            item.className = 'collected-item';
+            item.textContent = icon;
+            targetBucket.appendChild(item);
+
+            // Update stats
+            const count = targetBucket.children.length;
+            document.getElementById(`stats-${targetClientId}`).textContent = `${count} items`;
+        }
+
+        async function simulateIID() {
+            if (isAnimating) return;
+            reset();
+            isAnimating = true;
+
+            updateNarrator("Simulating IID (Balanced)", "In an <strong>IID</strong> world, data is randomly distributed. <br>Watch how every client gets a colorful mix of ALL icons. This is the 'perfect' scenario for AI training.");
+
+            // Spawn 50 particles randomly
+            for (let i = 0; i < 50; i++) {
+                if (!isAnimating) break;
+                const randomClient = Math.floor(Math.random() * 5);
+                const randomIcon = allIcons[Math.floor(Math.random() * allIcons.length)];
+                
+                spawnParticle(randomIcon, randomClient);
+                await new Promise(r => setTimeout(r, 100)); // Delay between drops
+            }
+
+            if (isAnimating) {
+                updateNarrator("IID Simulation Complete", "See? Every bucket has a mix of Sports, Food, Travel, etc. <br>The local models will all learn similar things. Easy!");
+            }
+        }
+
+        async function simulateNonIID() {
+            if (isAnimating) return;
+            reset();
+            isAnimating = true;
+
+            updateNarrator("Simulating Non-IID (Realistic)", "In the <strong>Real World (Non-IID)</strong>, people are different. <br>Watch how the Sports Fan mostly gets Sports data, and the Foodie gets Food data.");
+
+            // Spawn 50 particles based on preference
+            for (let i = 0; i < 50; i++) {
+                if (!isAnimating) break;
+                const clientId = Math.floor(Math.random() * 5);
+                const client = clients[clientId];
+                
+                // 90% chance of preferred icon, 10% random
+                let icon = client.pref;
+                if (Math.random() > 0.9) {
+                    icon = allIcons[Math.floor(Math.random() * allIcons.length)];
+                }
+
+                spawnParticle(icon, clientId);
+                await new Promise(r => setTimeout(r, 100));
+            }
+
+            if (isAnimating) {
+                updateNarrator("Non-IID Simulation Complete", "See? The buckets are sorted by color! <br>The Sports Fan knows a lot about Sports, but nothing about Art. This makes training harder!");
+            }
+        }
+
+    </script>
+</body>
+</html>

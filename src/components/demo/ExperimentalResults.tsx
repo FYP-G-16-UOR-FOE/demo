@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, TrendingDown, Minus, CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, Minus, TrendingDown, TrendingUp, XCircle } from "lucide-react";
 
 const ExperimentalResults = () => {
   // CIFAR-10 accuracy data across training rounds
@@ -74,7 +74,7 @@ const ExperimentalResults = () => {
         </p>
 
         <Tabs defaultValue="accuracy" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 h-auto gap-2">
             <TabsTrigger value="accuracy">Accuracy</TabsTrigger>
             <TabsTrigger value="convergence">Convergence</TabsTrigger>
             <TabsTrigger value="security">Security</TabsTrigger>
@@ -86,7 +86,7 @@ const ExperimentalResults = () => {
             {/* Method Abbreviations Legend */}
             <Card className="p-4 bg-muted/30">
               <h4 className="text-sm font-bold mb-3">Method Abbreviations</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
                 <div className="flex items-start gap-2">
                   <Badge variant="outline" className="font-mono">SEBW</Badge>
                   <span className="text-muted-foreground">Shannon Entropy Based Weighting Method</span>
