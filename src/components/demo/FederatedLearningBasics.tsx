@@ -122,7 +122,7 @@ const FederatedLearningBasics = () => {
           <TabsContent value="federated" className="space-y-8">
             {/* Gboard Simulation */}
             <Card className="w-full overflow-hidden bg-white/95 backdrop-blur border-primary/20">
-              <div className="aspect-[16/9] w-full min-h-[800px] relative">
+              <div className="aspect-[16/9] w-full min-h-[600px] md:min-h-[800px] relative">
                 <iframe 
                   src="/demo/fl_basics/index.html" 
                   className="absolute inset-0 w-full h-full border-0"

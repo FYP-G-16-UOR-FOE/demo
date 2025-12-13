@@ -35,28 +35,48 @@
 
         #diagram-container {
             position: relative;
-            width: 1300px; /* Increased width for more spacing */
-            height: 700px;
+            width: 100%;
+            max-width: 1300px;
+            height: 100%;
+            min-height: 600px;
+            overflow: hidden;
         }
 
         /* Server */
         #server {
             position: absolute;
-            top: 10px; /* Moved up slightly */
+            top: 10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 350px; /* Increased width */
+            width: 350px;
             height: 220px;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            #server {
+                width: 280px;
+                height: 180px;
+            }
+            .server-brain-img {
+                width: 60px !important;
+                height: 60px !important;
+            }
+            .server-label {
+                bottom: 20px !important;
+                padding: 4px 12px !important;
+                font-size: 12px;
+            }
         }
 
         .cloud-container {
             position: relative;
-            width: 320px; /* Big Cloud */
-            height: 200px;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -68,7 +88,6 @@
             height: 100%;
             object-fit: contain;
             z-index: 1;
-            /* SVG has built-in shadow */
         }
         
         .server-content {
@@ -83,21 +102,21 @@
 
         .server-brain-img {
             position: absolute;
-            top: 25%; /* Moved up significantly */
+            top: 25%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 80px;
             height: 80px;
             object-fit: contain;
-            mix-blend-mode: multiply; /* Ensures white background is transparent */
+            mix-blend-mode: multiply;
         }
 
         .model-label {
             position: absolute;
-            top: 50%; /* Adjusted spacing */
+            top: 50%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 11px; /* Slightly larger */
+            font-size: 11px;
             font-weight: bold;
             color: var(--google-blue);
             background: rgba(255, 255, 255, 0.9);
@@ -108,7 +127,7 @@
 
         .server-label {
             position: absolute;
-            bottom: 45px; /* Moved up */
+            bottom: 45px;
             background: #fff;
             padding: 6px 16px;
             border-radius: 20px;
@@ -122,7 +141,7 @@
         }
         .server-label img { width: 18px; height: 18px; }
 
-        /* Client Wrapper (Positions the whole unit) */
+        /* Client Wrapper */
         .client-wrapper {
             position: absolute;
             bottom: 20px;
@@ -130,27 +149,37 @@
             flex-direction: column;
             align-items: center;
             width: 180px;
+            transition: left 0.5s ease;
+            transform: translateX(-50%); /* Center based on left position */
+            transform-origin: bottom center;
+        }
+
+        @media (max-width: 600px) {
+            .client-wrapper {
+                transform: translateX(-50%) scale(0.6); /* Smaller scale to prevent overlap */
+                bottom: 10px;
+            }
         }
 
         /* Phone Visuals */
         .client-phone {
             position: relative;
-            width: 180px;
-            height: 320px;
+            width: 160px; /* Slightly reduced base width */
+            height: 300px; /* Slightly reduced base height */
             background: #fff;
-            border: 8px solid #333;
-            border-radius: 24px;
+            border: 6px solid #333; /* Thinner border */
+            border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Keeps content inside rounded corners */
+            overflow: hidden;
             box-sizing: content-box;
             z-index: 5;
         }
 
         /* Phone Header */
         .phone-header {
-            height: 20px;
+            height: 18px;
             background: #f1f3f4;
             display: flex;
             align-items: center;
@@ -158,13 +187,13 @@
             border-bottom: 1px solid #e0e0e0;
             flex-shrink: 0;
         }
-        .camera-hole { width: 6px; height: 6px; background: #333; border-radius: 50%; }
+        .camera-hole { width: 5px; height: 5px; background: #333; border-radius: 50%; }
 
         /* Chat Area */
         .chat-screen {
             flex-grow: 1;
             background: #fff;
-            padding: 10px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -175,10 +204,10 @@
         .bubble {
             background: var(--google-blue);
             color: white;
-            padding: 6px 10px;
-            border-radius: 12px 12px 0 12px;
-            font-size: 11px;
-            margin-top: 5px;
+            padding: 5px 8px;
+            border-radius: 10px 10px 0 10px;
+            font-size: 10px;
+            margin-top: 4px;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s;
@@ -188,7 +217,7 @@
         /* Gboard UI */
         .gboard-container {
             background: var(--keyboard-bg);
-            padding: 5px;
+            padding: 4px;
             border-top: 1px solid #dadce0;
             flex-shrink: 0;
         }
@@ -196,70 +225,70 @@
         .suggestions-strip {
             display: flex;
             justify-content: space-around;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
+            padding-bottom: 4px;
+            margin-bottom: 4px;
             border-bottom: 1px solid #e0e0e0;
         }
         .g-logo {
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: conic-gradient(from -45deg, #ea4335 0deg 90deg, #34a853 90deg 180deg, #fbbc04 180deg 270deg, #4285f4 270deg 360deg);
             border-radius: 50%;
         }
-        .sugg-word { font-size: 10px; color: #5f6368; }
+        .sugg-word { font-size: 9px; color: #5f6368; }
 
         .keyboard-row {
             display: flex;
             justify-content: center;
-            gap: 2px;
-            margin-bottom: 3px;
+            gap: 1px;
+            margin-bottom: 2px;
         }
 
         .key {
             background: var(--key-bg);
-            border-radius: 4px;
+            border-radius: 3px;
             box-shadow: 0 1px 0 var(--key-shadow);
-            height: 20px;
-            width: 14px;
+            height: 18px;
+            width: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
+            font-size: 7px;
             color: #3c4043;
         }
         
-        .key.space { width: 80px; }
-        .key.enter { background: var(--google-blue); color: white; width: 24px; }
+        .key.space { width: 70px; }
+        .key.enter { background: var(--google-blue); color: white; width: 20px; }
         .key.active { background: #d2e3fc; }
 
         /* User Info Tag */
         .user-tag {
             position: absolute;
-            top: -35px;
+            top: -30px;
             left: 50%;
             transform: translateX(-50%);
             background: #333;
             color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
             white-space: nowrap;
             z-index: 10;
         }
 
         /* Local Model Node */
         .local-model {
-            margin-top: 15px; /* Space below phone */
-            width: 140px; /* Increased width for icon */
-            height: 40px;
+            margin-top: 10px;
+            width: 120px;
+            height: 36px;
             background: #fff;
             border: 2px solid var(--google-green);
-            border-radius: 20px;
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px; /* Space between icon and text */
-            font-size: 11px;
+            gap: 6px;
+            font-size: 10px;
             font-weight: bold;
             color: var(--google-green);
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -268,16 +297,16 @@
             position: relative;
         }
         .local-model img {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 4px;
         }
         .local-model::before {
             content: '▼';
             position: absolute;
-            top: -14px;
+            top: -12px;
             color: #bdc1c6;
-            font-size: 10px;
+            font-size: 9px;
         }
         .local-model.training {
             background: var(--google-green);
@@ -301,9 +330,10 @@
             stroke: #bdc1c6;
             stroke-width: 2;
             stroke-dasharray: 6;
+            transition: d 0.5s ease;
         }
 
-        /* Server Animation States */
+        /* Animations */
         @keyframes pulse {
             0% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.2); filter: brightness(1.2); }
@@ -335,12 +365,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 50; /* High z-index to show over phone */
+            z-index: 50;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .particle img { width: 20px; height: 20px; }
 
-        /* Highlight for active suggestion */
         .sugg-word.active {
             background: #e8f0fe;
             color: var(--google-blue);
@@ -352,7 +381,6 @@
             transition: all 0.2s;
         }
 
-        /* Status */
         #process-indicator {
             position: absolute;
             top: 20px;
@@ -368,20 +396,26 @@
             z-index: 100;
             transition: all 0.3s ease;
         }
+        
+        @media (max-width: 600px) {
+            #process-indicator {
+                font-size: 12px;
+                padding: 8px 16px;
+                top: 10px;
+                left: 10px;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div id="process-indicator">Step 0: Ready</div>
-    <!-- Status bar removed -->
 
     <div id="diagram-container">
         <svg id="connections"></svg>
 
         <div id="server">
             <div class="cloud-container">
-                <!-- Cloud removed -->
-                
                 <div class="server-content">
                     <img src="brain_icon_hq.png" class="server-brain-img" alt="Global Model">
                     <div class="model-label">Global Model</div>
@@ -400,12 +434,9 @@
     <script>
         const container = document.getElementById('diagram-container');
         const svg = document.getElementById('connections');
-        // statusBar removed
         const processIndicator = document.getElementById('process-indicator');
 
-        const numClients = 5;
         const clients = [];
-        // Updated Personas for Prediction Flow
         const personas = [
             { name: "Sports Fan", icon: "⚽", partial: "Did you see the", target: "goal", sugg: ["goal", "score", "team"] },
             { name: "Foodie", icon: "🍔", partial: "I want a", target: "burger", sugg: ["burger", "fries", "eat"] },
@@ -414,15 +445,12 @@
             { name: "Artist", icon: "🎨", partial: "Love this", target: "color", sugg: ["color", "paint", "draw"] }
         ];
 
-        // QWERTY Layout for visual
         const row1 = "qwertyuiop".split('');
         const row2 = "asdfghjkl".split('');
         const row3 = "zxcvbnm".split('');
 
         function createKeyboard(suggestions, id) {
             let html = '<div class="gboard-container">';
-            
-            // Suggestions
             html += `
                 <div class="suggestions-strip" id="sugg-strip-${id}">
                     <div class="g-logo"></div>
@@ -431,8 +459,6 @@
                     <div class="sugg-word" id="sugg-${id}-2">${suggestions[2]}</div>
                 </div>
             `;
-
-            // Keys
             html += '<div class="keyboard-row">';
             row1.forEach(k => html += `<div class="key" id="key-${k}">${k}</div>`);
             html += '</div><div class="keyboard-row">';
@@ -447,31 +473,45 @@
             return html;
         }
 
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                location.reload(); // Simplest way to reset everything cleanly
+            }, 300);
+        });
+
         function init() {
             const width = container.clientWidth;
+            
+            // Determine number of clients based on width
+            let numClients = 5;
+            if (width < 600) numClients = 2;
+            else if (width < 900) numClients = 3;
+            else if (width < 1100) numClients = 4;
+
             const spacing = width / (numClients + 1);
 
             for (let i = 0; i < numClients; i++) {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'client-wrapper';
-                wrapper.style.left = (spacing * (i + 1)) - 90 + 'px';
+                wrapper.style.left = (spacing * (i + 1)) + 'px';
 
                 wrapper.innerHTML = `
                     <div class="user-tag">${personas[i].icon} ${personas[i].name}</div>
                     <div class="client-phone">
                         <div class="phone-header"><div class="camera-hole"></div></div>
                         <div class="chat-screen" id="chat-${i}"></div>
-                ${createKeyboard(personas[i].sugg, i)}
-            </div>
-            <div class="local-model" id="local-${i}">
-                <img src="brain_icon.png" alt="Brain">
-                <span>Local Model</span>
-            </div>
-        `;        
+                        ${createKeyboard(personas[i].sugg, i)}
+                    </div>
+                    <div class="local-model" id="local-${i}">
+                        <img src="brain_icon.png" alt="Brain">
+                        <span>Local Model</span>
+                    </div>
+                `;        
                 container.appendChild(wrapper);
                 clients.push(wrapper);
                 
-                // Connect Server to Phone (top of wrapper)
                 drawConnection(document.getElementById('server'), wrapper, i);
             }
 
@@ -482,16 +522,14 @@
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             path.setAttribute('id', `path-${i}`);
             
-            // Target the server label specifically
             const serverLabel = server.querySelector('.server-label');
             const sRect = serverLabel.getBoundingClientRect();
             const wRect = wrapper.getBoundingClientRect();
             const dRect = container.getBoundingClientRect();
 
             const sx = sRect.left - dRect.left + sRect.width/2;
-            const sy = sRect.bottom - dRect.top; // Start exactly from bottom of label
+            const sy = sRect.bottom - dRect.top;
             
-            // Connect to top of phone (which is inside wrapper)
             const cx = wRect.left - dRect.left + wRect.width/2;
             const cy = wRect.top - dRect.top;
 
@@ -505,7 +543,6 @@
         function updateProcess(step, text, color) {
             processIndicator.textContent = `Step ${step}: ${text}`;
             processIndicator.style.borderLeftColor = color;
-            // Status bar removed
         }
 
         async function startLoop() {
@@ -515,18 +552,16 @@
                 await Promise.all(clients.map((_, i) => animateParticle(i, 'down', 'brain_icon.png')));
                 await wait(1000);
 
-                // 2. Typing Partial Phrase
+                // 2. Typing
                 updateProcess(2, "User Typing...", "#34a853");
-                
                 clients.forEach((wrapper, i) => {
                     const msg = personas[i].partial;
                     const bubble = document.createElement('div');
                     bubble.className = 'bubble';
-                    bubble.textContent = msg + "..."; // Show partial
+                    bubble.textContent = msg + "...";
                     document.getElementById(`chat-${i}`).appendChild(bubble);
                     setTimeout(() => bubble.classList.add('visible'), 50);
 
-                    // Key press effect
                     const keys = wrapper.querySelectorAll('.key');
                     for(let k=0; k<3; k++) {
                         setTimeout(() => {
@@ -538,10 +573,8 @@
                 });
                 await wait(2500);
 
-                // 3. Prediction & Selection
+                // 3. Prediction
                 updateProcess(3, "Model Predicts Next Word", "#fbbc04");
-                
-                // Highlight suggestion
                 clients.forEach((_, i) => {
                     const targetWord = personas[i].target;
                     const suggs = personas[i].sugg;
@@ -554,12 +587,10 @@
                 await wait(1500);
 
                 updateProcess(3, "User Selects Prediction", "#fbbc04");
-                // Simulate click and complete sentence
                 clients.forEach((_, i) => {
                     const bubble = document.querySelector(`#chat-${i} .bubble`);
                     bubble.textContent = personas[i].partial + " " + personas[i].target;
                     
-                    // Remove highlight
                     const targetWord = personas[i].target;
                     const suggs = personas[i].sugg;
                     const targetIndex = suggs.indexOf(targetWord);
@@ -570,9 +601,8 @@
                 });
                 await wait(1500);
 
-                // 4. Local Training (Data -> Local Model)
+                // 4. Local Training
                 updateProcess(4, "Training on User Selection", "#1e8e3e");
-                
                 await Promise.all(clients.map((wrapper, i) => {
                     return new Promise(resolve => {
                         const bubble = wrapper.querySelector('.bubble');
@@ -609,7 +639,6 @@
                         };
                     });
                 }));
-                
                 await wait(3000); 
                 
                 clients.forEach((_, i) => {
@@ -632,26 +661,23 @@
                 // 6. Aggregation
                 updateProcess(6, "Aggregating Global Model", "#ea4335");
                 const serverImg = document.querySelector('.server-brain-img');
-                const modelLabel = document.querySelector('.model-label'); // Target inner label
+                const modelLabel = document.querySelector('.model-label');
                 
-                // Start aggregation animation
                 serverImg.classList.add('aggregating');
                 modelLabel.textContent = "Updating...";
-                
                 await wait(2000);
                 
-                // Finish aggregation
                 serverImg.classList.remove('aggregating');
-                modelLabel.textContent = "Global Model v2"; // Simulate version update
-                
+                modelLabel.textContent = "Global Model v2";
                 await wait(1000);
-                modelLabel.textContent = "Global Model"; // Reset for loop
+                modelLabel.textContent = "Global Model";
             }
         }
 
         function animateParticle(i, dir, content) {
             return new Promise(resolve => {
                 const path = document.getElementById(`path-${i}`);
+                if (!path) { resolve(); return; } // Safety check
                 const len = path.getTotalLength();
                 const p = document.createElement('div');
                 p.className = 'particle';
@@ -661,7 +687,7 @@
                     img.src = content;
                     img.style.width = '20px';
                     img.style.height = '20px';
-                    img.style.borderRadius = '50%'; // Make it round for white background
+                    img.style.borderRadius = '50%';
                     p.appendChild(img);
                 } else {
                     p.textContent = content;
@@ -669,7 +695,7 @@
                 
                 container.appendChild(p);
 
-                const duration = 3000; // Slower particle
+                const duration = 3000;
                 const start = performance.now();
 
                 function step(time) {
@@ -696,7 +722,7 @@
         function animateUpload(i) {
             return new Promise(resolve => {
                 const localModel = document.getElementById(`local-${i}`);
-                const serverImg = document.querySelector('.server-brain-img'); // Target the icon directly
+                const serverImg = document.querySelector('.server-brain-img');
                 
                 const p = document.createElement('div');
                 p.className = 'particle';
@@ -704,24 +730,22 @@
                 container.appendChild(p);
 
                 const lRect = localModel.getBoundingClientRect();
-                const sRect = serverImg.getBoundingClientRect(); // Get icon rect
+                const sRect = serverImg.getBoundingClientRect();
                 const cRect = container.getBoundingClientRect();
 
                 const startX = lRect.left - cRect.left + lRect.width/2;
                 const startY = lRect.top - cRect.top;
                 
-                // Target center of the icon
                 const endX = sRect.left - cRect.left + sRect.width/2;
                 const endY = sRect.top - cRect.top + sRect.height/2;
 
                 const anim = p.animate([
                     { left: startX + 'px', top: startY + 'px', transform: 'scale(1)' },
-                    { left: endX + 'px', top: endY + 'px', transform: 'scale(0.5)' } // Scale down to disappear
+                    { left: endX + 'px', top: endY + 'px', transform: 'scale(0.5)' }
                 ], { duration: 3000, easing: 'ease-in-out' });
 
                 anim.onfinish = () => {
                     p.remove();
-                    // Trigger pulse on server icon
                     serverImg.classList.add('pulse');
                     setTimeout(() => serverImg.classList.remove('pulse'), 300);
                     resolve();
